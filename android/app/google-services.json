@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "253131687143",
+    "project_id": "fir-recycle-769a8",
+    "storage_bucket": "fir-recycle-769a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253131687143:android:f955c9525a866eae9b8e42",
+        "android_client_info": {
+          "package_name": "com.example.vary_recycle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253131687143-8gceav2ibqkli1prkjk9o307oqlq228f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoq36Yo7m2S_AwthWNrJRXO1Gc0V5TX80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253131687143-8gceav2ibqkli1prkjk9o307oqlq228f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
