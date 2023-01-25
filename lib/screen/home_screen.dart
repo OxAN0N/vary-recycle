@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:vary_recycle/widgets/camera_widget.dart';
+import 'package:vary_recycle/screen/take_picture_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
