@@ -1,7 +1,5 @@
 // A widget that displays the picture taken by the user.
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:vary_recycle/screen/reward_screen.dart';
@@ -49,57 +47,66 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       extendBodyBehindAppBar: true,
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Column(
-        children: [
-          Image.file(File(widget.imagePath)),
-          const SizedBox(
-            height: 50,
-          ),
-          const Text(
-            '해당 사진으로 선택하시겠어요?',
-            style: TextStyle(
-              color: Colors.green,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.green,
+      body: Expanded(
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final width = constraints.maxWidth;
+            final height = constraints.maxHeight;
+            final ratio = width / height;
+            return Column(
+              children: [
+                Image.file(File(widget.imagePath)),
+                SizedBox(
+                  height: 50 * ratio,
                 ),
-                child: const Text(
-                  '다시 찍기',
+                Text(
+                  '해당 사진으로 선택하시겠어요?',
                   style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
+                    color: Colors.green,
+                    fontSize: 35 * ratio,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              TextButton(
-                onPressed: onConfirmTap, // 이미지 서버 storage로 보내기
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.green,
+                SizedBox(
+                  height: 45 * ratio,
                 ),
-                child: const Text(
-                  '확인',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: Text(
+                        '다시 찍기',
+                        style: TextStyle(
+                          fontSize: 45 * ratio,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: onConfirmTap, // 이미지 서버 storage로 보내기
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontSize: 45 * ratio,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }

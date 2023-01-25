@@ -28,7 +28,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // Get a specific camera from the list of available cameras.
       widget.camera,
       // Define the resolution to use.
-      ResolutionPreset.medium,
+      ResolutionPreset.veryHigh,
     );
 
     // Next, initialize the controller. This returns a Future.
@@ -102,76 +102,90 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               }
             },
           ),
-          Column(
-            children: [
-              const SizedBox(
-                height: 50,
-              ),
-              const Text(
-                '분리수거 할 물건을 촬영해주세요.',
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        size: 60,
-                        color: Colors.green.shade600,
+          Expanded(
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final width = constraints.maxWidth;
+                final height = constraints.maxHeight;
+                final ratio = width / height;
+
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 5 * ratio,
+                    ),
+                    Text(
+                      '분리수거 할 물건을 촬영해주세요.',
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 7 * ratio,
+                        fontWeight: FontWeight.bold,
                       ),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.subdirectory_arrow_left_rounded),
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        size: 125,
-                        color: Colors.green.shade600,
-                      ),
-                      IconButton(
-                        onPressed: onCameraTap,
-                        icon: const Icon(Icons.camera_alt_outlined),
-                        iconSize: 60,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        size: 60,
-                        color: Colors.green.shade600,
-                      ),
-                      IconButton(
-                        onPressed: () {}, // 갤러리 할까말까 고민 중
-                        icon: const Icon(Icons.photo_library_rounded),
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ],
+                    ),
+                    SizedBox(
+                      height: 5 * ratio,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              size: 20 * ratio,
+                              color: Colors.green.shade600,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.subdirectory_arrow_left_rounded,
+                                size: 7 * ratio,
+                              ),
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              size: 30 * ratio,
+                              color: Colors.green.shade600,
+                            ),
+                            IconButton(
+                              onPressed: onCameraTap,
+                              icon: const Icon(Icons.camera_alt_outlined),
+                              iconSize: 15 * ratio,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              size: 20 * ratio,
+                              color: Colors.green.shade600,
+                            ),
+                            IconButton(
+                              onPressed: () {}, // 갤러리 할까말까 고민 중
+                              icon: const Icon(Icons.photo_library_rounded),
+                              iconSize: 7 * ratio,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              },
+            ),
           )
         ],
       ),
