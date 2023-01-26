@@ -48,7 +48,7 @@ post_install do |installer|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
         config.build_settings['ENABLE_BITCODE'] = 'NO'
           if config.build_settings['WRAPPER_EXTENSION'] == 'bundle'
-            config.build_settings['DEVELOPMENT_TEAM'] = '547S69FCTW'
+            config.build_settings['DEVELOPMENT_TEAM'] = 'YOUR_TEAM_ID'
           end
           config.build_settings['ENABLE_BITCODE'] = 'NO'
 
