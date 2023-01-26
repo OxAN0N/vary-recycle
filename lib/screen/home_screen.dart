@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:vary_recycle/screen/barcode_scan_screen.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +24,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 )));
   }
 
+  void _openBarcodeScanner() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: ((context) => const QrBarcodeScanner(
+                  title: "QR/Barcode",
+                ))));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: const Icon(
                     Icons.recycling,
                   )),
+              IconButton(
+                iconSize: 100,
+                onPressed: _openBarcodeScanner,
+                icon: const Icon(Icons.qr_code_2),
+              ),
             ],
           )
         ],
