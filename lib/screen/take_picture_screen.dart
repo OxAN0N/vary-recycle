@@ -149,7 +149,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           ],
                         ),
                         Stack(
-                          alignment: Alignment.center,
+                          alignment: Alignment.bottomLeft,
                           children: [
                             Icon(
                               Icons.circle,
