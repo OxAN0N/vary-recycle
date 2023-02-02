@@ -1,8 +1,10 @@
 // A widget that displays the picture taken by the user.
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:vary_recycle/screen/reward_screen.dart';
+import 'package:http/http.dart' as http;
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
@@ -14,6 +16,28 @@ class DisplayPictureScreen extends StatefulWidget {
 }
 
 class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
+  String result = 'Take Picture Again';
+
+  Future<String> getResult() async {
+    String server = "121.169.44.47";
+    String restPort = "13285";
+    // String modelName = "recycle";
+    var imageFile = File(widget.imagePath);
+    List<int> imageBytes = imageFile.readAsBytesSync();
+    String base64Image = base64Encode(imageBytes);
+    final res = await http.post(
+      Uri.parse('${'http://$server'}:$restPort/test'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode([
+        {'type': 'PET', 'image': base64Image}
+      ]),
+    );
+    result = res.body;
+    return res.body;
+  }
+
   onConfirmTap() async {
     final storageRef = FirebaseStorage.instance.ref();
     final imageRef = storageRef.child(widget.imagePath
@@ -24,12 +48,22 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
       await imageRef.putFile(file);
 
       if (!mounted) return;
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) =>
-                const RewardScreen()), //이후에 이미지 분석해서 Reward or fail 분기점 만들기
-      );
+      // getResult();
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) {
+          return FutureBuilder(
+              future: getResult(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return RewardScreen(result: result);
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              });
+        },
+      )
+          //이후에 이미지 분석해서 Reward or fail 분기점 만들기
+          );
     } catch (e) {
       print(e);
     }

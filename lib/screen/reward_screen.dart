@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vary_recycle/screen/home_screen.dart';
 
 class RewardScreen extends StatelessWidget {
-  const RewardScreen({super.key});
+  final result;
+  const RewardScreen({super.key, this.result});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +12,9 @@ class RewardScreen extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "REWARD SCREEN",
-              style: TextStyle(
+            Text(
+              result,
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w600,
               ),
