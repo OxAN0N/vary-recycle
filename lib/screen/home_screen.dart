@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   bool _isExpanded = false;
 
-  void _openCameraPage() async {
+  void _openCameraPage(String recycleType) async {
     final cameras = await availableCameras();
     final firstCamera = cameras.first;
 
@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen>
         MaterialPageRoute(
             builder: (context) => TakePictureScreen(
                   camera: firstCamera,
+                  recycleType: recycleType,
                 )));
   }
 
@@ -190,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         IconButton(
                           iconSize: 120,
-                          onPressed: _openCameraPage,
+                          onPressed: () => _openCameraPage('plastic'),
                           icon: Image.asset(
                             "assets/plastic.png",
                           ),
@@ -208,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         IconButton(
                           iconSize: 100,
-                          onPressed: _openCameraPage,
+                          onPressed: () => _openCameraPage('can'),
                           icon: Image.asset(
                             "assets/can.png",
                           ),
@@ -231,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         IconButton(
                           iconSize: 120,
-                          onPressed: _openCameraPage,
+                          onPressed: () => _openCameraPage('glass'),
                           icon: Image.asset(
                             "assets/glass.png",
                           ),
@@ -249,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         IconButton(
                           iconSize: 110,
-                          onPressed: _openCameraPage,
+                          onPressed: () => _openCameraPage('pet'),
                           icon: Image.asset(
                             "assets/pet.png",
                           ),
