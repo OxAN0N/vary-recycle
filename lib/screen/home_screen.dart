@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   bool _isExpanded = false;
 
-  void _openCameraPage() async {
+  void _openCameraPage(String recycleType) async {
     final cameras = await availableCameras();
     final firstCamera = cameras.first;
 
@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen>
         MaterialPageRoute(
             builder: (context) => TakePictureScreen(
                   camera: firstCamera,
+                  recycleType: recycleType,
                 )));
   }
 
@@ -95,319 +96,316 @@ class _HomeScreenState extends State<HomeScreen>
         appBar: AppBar(
           elevation: 10,
           backgroundColor: Colors.green,
+          centerTitle: true,
           title: const Text(
             'Vary Recycle',
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w400,
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite,
-                size: 30,
-                color: Colors.black,
-              ),
-            )
-          ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Flexible(
-                      child: TextField(
-                        focusNode: textFoucs,
-                        textInputAction: TextInputAction.go,
-                        onSubmitted: (value) {
-                          textFoucs.unfocus();
-                        },
-                        controller: SearchWord,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          labelText: "Search",
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.green,
-                              width: 4,
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Flexible(
+                        child: TextField(
+                          focusNode: textFoucs,
+                          textInputAction: TextInputAction.go,
+                          onSubmitted: (value) {
+                            textFoucs.unfocus();
+                          },
+                          controller: SearchWord,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
                             ),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Icon(
-                              Icons.search,
+                            labelText: "Search",
+                            labelStyle: const TextStyle(
                               color: Colors.black,
-                              size: 35,
+                              fontSize: 20,
                             ),
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: SearchWord.clear,
-                            icon: const Icon(
-                              Icons.cancel,
-                              color: Colors.black,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.green,
+                                width: 4,
+                              ),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.only(left: 15),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.black,
+                                size: 35,
+                              ),
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: SearchWord.clear,
+                              icon: const Icon(
+                                Icons.cancel,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.qr_code_scanner),
-                      iconSize: 40,
-                      onPressed: _openBarcodeScanner,
-                    ),
-                  ],
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.qr_code_scanner),
+                        iconSize: 40,
+                        onPressed: _openBarcodeScanner,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                          iconSize: 120,
-                          onPressed: _openCameraPage,
-                          icon: Image.asset(
-                            "assets/plastic.png",
+              const SizedBox(
+                height: 10,
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                            iconSize: 120,
+                            onPressed: () => _openCameraPage('plastic'),
+                            icon: Image.asset(
+                              "assets/plastic.png",
+                            ),
                           ),
-                        ),
-                        const Text(
-                          'plastic',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          iconSize: 100,
-                          onPressed: _openCameraPage,
-                          icon: Image.asset(
-                            "assets/can.png",
-                          ),
-                        ),
-                        const Text(
-                          'can',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                          iconSize: 120,
-                          onPressed: _openCameraPage,
-                          icon: Image.asset(
-                            "assets/glass.png",
-                          ),
-                        ),
-                        const Text(
-                          'glass',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          iconSize: 110,
-                          onPressed: _openCameraPage,
-                          icon: Image.asset(
-                            "assets/pet.png",
-                          ),
-                        ),
-                        const Text(
-                          'pet',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.green,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 15,
-                            bottom: 20,
-                          ),
-                          child: Text(
-                            'Kwon Kyoung min',
+                          const Text(
+                            'plastic',
                             style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w500),
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            iconSize: 100,
+                            onPressed: () => _openCameraPage('can'),
+                            icon: Image.asset(
+                              "assets/can.png",
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: const [
-                              Icon(
-                                Icons.attach_money_outlined,
-                                size: 50,
-                              ),
-                              Text(
-                                "104,235,235",
-                                style: TextStyle(
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.w500,
+                          const Text(
+                            'can',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                            iconSize: 120,
+                            onPressed: () => _openCameraPage('glass'),
+                            icon: Image.asset(
+                              "assets/glass.png",
+                            ),
+                          ),
+                          const Text(
+                            'glass',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            iconSize: 110,
+                            onPressed: () => _openCameraPage('pet'),
+                            icon: Image.asset(
+                              "assets/pet.png",
+                            ),
+                          ),
+                          const Text(
+                            'pet',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Container(
+                      height: 200,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.green,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              left: 15,
+                              bottom: 20,
+                            ),
+                            child: Text(
+                              'Kwon Kyoung min',
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: const [
+                                Icon(
+                                  Icons.attach_money_outlined,
+                                  size: 50,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  "104,235,235",
+                                  style: TextStyle(
+                                    fontSize: 50,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 30,
-                    horizontal: 20,
-                  ),
-                  child: Container(
-                    height: 100,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.green,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 30,
+                      horizontal: 20,
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
+                    child: Container(
+                      height: 100,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.green,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
                           ),
-                          child: Column(
-                            children: [
-                              const Text(
-                                'your percentage in mouth',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  'your percentage in mouth',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Container(
-                                height: 10,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black,
+                                const SizedBox(
+                                  height: 30,
                                 ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(20),
-                                          topLeft: Radius.circular(20),
-                                        ),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      fit: FlexFit.tight,
-                                      child: Container(
+                                Container(
+                                  height: 10,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.black,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 100,
                                         decoration: const BoxDecoration(
-                                          color: Colors.grey,
+                                          color: Colors.blue,
                                           borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(20),
-                                            topRight: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20),
+                                            topLeft: Radius.circular(20),
                                           ),
                                         ),
                                       ),
-                                    )
-                                  ],
+                                      Flexible(
+                                        fit: FlexFit.tight,
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius: BorderRadius.only(
+                                              bottomRight: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
