@@ -1,16 +1,15 @@
 // A widget that displays the picture taken by the user.
 import 'dart:convert';
 import 'dart:io';
-import 'package:firebase_ml_model_downloader/firebase_ml_model_downloader.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:vary_recycle/screen/reward_screen.dart';
 import 'package:http/http.dart' as http;
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
-  final String recycleType;
-  const DisplayPictureScreen(
-      {super.key, required this.imagePath, required this.recycleType});
+
+  const DisplayPictureScreen({super.key, required this.imagePath});
 
   @override
   State<DisplayPictureScreen> createState() => _DisplayPictureScreenState();
@@ -20,8 +19,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   String result = 'Take Picture Again';
 
   Future<String> getResult() async {
-    String server = "121.169.44.47";
-    String restPort = "13285";
+    String server = "ip address";
+    String restPort = "port";
     // String modelName = "recycle";
     var imageFile = File(widget.imagePath);
     List<int> imageBytes = imageFile.readAsBytesSync();
@@ -32,7 +31,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode([
-        {'type': widget.recycleType, 'image': base64Image}
+        {'type': 'PET', 'image': base64Image}
       ]),
     );
     result = res.body;
@@ -56,12 +55,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               future: getResult(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  // return RewardScreen(result: result);
-                  return Scaffold(
-                    body: Center(
-                      child: Text(result),
-                    ),
-                  );
+                  return RewardScreen(result: result);
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -76,37 +70,10 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    final myModel = FirebaseModelDownloader.instance
-        .getModel(
-            "orange_banana",
-            FirebaseModelDownloadType.localModel,
-            FirebaseModelDownloadConditions(
-              iosAllowsCellularAccess: true,
-              iosAllowsBackgroundDownloading: false,
-              androidChargingRequired: false,
-              androidWifiRequired: false,
-              androidDeviceIdleRequired: false,
-            ))
-        .then((customModel) {
-      // Download complete. Depending on your app, you could enable the ML
-      // feature, or switch from the local model to the remote model, etc.
-
-      // The CustomModel object contains the local path of the model file,
-      // which you can use to instantiate a TensorFlow Lite interpreter.
-      final localModelPath = customModel.file;
-
-      // ...
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
+        title: const Text('플라스틱'), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,

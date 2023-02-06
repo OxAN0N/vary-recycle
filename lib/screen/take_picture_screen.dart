@@ -7,11 +7,10 @@ import 'display_picture_screen.dart';
 
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
-  const TakePictureScreen(
-      {super.key, required this.camera, required this.recycleType});
+  const TakePictureScreen({super.key, required this.camera});
 
   final CameraDescription camera;
-  final String recycleType;
+
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
 }
@@ -63,7 +62,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // Pass the automatically generated path to
             // the DisplayPictureScreen widget.
             imagePath: image.path,
-            recycleType: widget.recycleType,
           ),
         ),
       );
@@ -78,8 +76,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
+        title: const Text('플라스틱'), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
