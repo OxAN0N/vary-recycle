@@ -4,13 +4,13 @@ import 'dart:io';
 import 'package:firebase_ml_model_downloader/firebase_ml_model_downloader.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:vary_recycle/screen/reward_screen.dart';
 import 'package:http/http.dart' as http;
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
-
-  const DisplayPictureScreen({super.key, required this.imagePath});
+  final String recycleType;
+  const DisplayPictureScreen(
+      {super.key, required this.imagePath, required this.recycleType});
 
   @override
   State<DisplayPictureScreen> createState() => _DisplayPictureScreenState();
@@ -32,7 +32,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode([
-        {'type': 'PET', 'image': base64Image}
+        {'type': widget.recycleType, 'image': base64Image}
       ]),
     );
     result = res.body;
@@ -56,7 +56,12 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
               future: getResult(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return RewardScreen(result: result);
+                  // return RewardScreen(result: result);
+                  return Scaffold(
+                    body: Center(
+                      child: Text(result),
+                    ),
+                  );
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -100,7 +105,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('플라스틱'), // 홈 화면에서 누른 위젯에 따라 변경 필요!
+        title:
+            Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0.0,

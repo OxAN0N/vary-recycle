@@ -10,8 +10,18 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  void _openCameraPage() async {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  TextEditingController SearchWord = TextEditingController();
+  FocusNode textFoucs = FocusNode();
+
+  late AnimationController _animationController;
+  late Animation<double> _buttonAniatedIcon;
+  late Animation<double> _translateButton;
+
+  bool _isExpanded = false;
+
+  void _openCameraPage(String recycleType) async {
     final cameras = await availableCameras();
     final firstCamera = cameras.first;
 
@@ -21,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(
             builder: (context) => TakePictureScreen(
                   camera: firstCamera,
+                  recycleType: recycleType,
                 )));
   }
 
@@ -34,32 +45,452 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    SearchWord.addListener(_printSearchText);
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 600))
+      ..addListener(() {
+        setState(() {});
+      });
+
+    _buttonAniatedIcon =
+        Tween<double>(begin: 0, end: 1).animate(_animationController);
+    _translateButton = Tween<double>(
+      begin: 100,
+      end: -20,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _printSearchText() {
+    print("print Search field ${SearchWord.text}");
+  }
+
+  _toggle() {
+    if (_isExpanded) {
+      _animationController.reverse();
+    } else {
+      _animationController.forward();
+    }
+
+    _isExpanded = !_isExpanded;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return GestureDetector(
+      onTap: () {
+        textFoucs.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          elevation: 10,
+          backgroundColor: Colors.green,
+          centerTitle: true,
+          title: const Text(
+            'Vary Recycle',
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
             children: [
-              const Text(
-                'HOME SCREEN',
-                style: TextStyle(fontSize: 32),
+              const SizedBox(
+                height: 10,
               ),
-              IconButton(
-                  iconSize: 100,
-                  onPressed: _openCameraPage,
-                  icon: const Icon(
-                    Icons.recycling,
-                  )),
-              IconButton(
-                iconSize: 100,
-                onPressed: _openBarcodeScanner,
-                icon: const Icon(Icons.qr_code_2),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Flexible(
+                        child: TextField(
+                          focusNode: textFoucs,
+                          textInputAction: TextInputAction.go,
+                          onSubmitted: (value) {
+                            textFoucs.unfocus();
+                          },
+                          controller: SearchWord,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            labelText: "Search",
+                            labelStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.green,
+                                width: 4,
+                              ),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.only(left: 15),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.black,
+                                size: 35,
+                              ),
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: SearchWord.clear,
+                              icon: const Icon(
+                                Icons.cancel,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.qr_code_scanner),
+                        iconSize: 40,
+                        onPressed: _openBarcodeScanner,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                            iconSize: 120,
+                            onPressed: () => _openCameraPage('plastic'),
+                            icon: Image.asset(
+                              "assets/plastic.png",
+                            ),
+                          ),
+                          const Text(
+                            'plastic',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            iconSize: 100,
+                            onPressed: () => _openCameraPage('can'),
+                            icon: Image.asset(
+                              "assets/can.png",
+                            ),
+                          ),
+                          const Text(
+                            'can',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                            iconSize: 120,
+                            onPressed: () => _openCameraPage('glass'),
+                            icon: Image.asset(
+                              "assets/glass.png",
+                            ),
+                          ),
+                          const Text(
+                            'glass',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            iconSize: 110,
+                            onPressed: () => _openCameraPage('pet'),
+                            icon: Image.asset(
+                              "assets/pet.png",
+                            ),
+                          ),
+                          const Text(
+                            'pet',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Container(
+                      height: 200,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.green,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                              left: 15,
+                              bottom: 20,
+                            ),
+                            child: Text(
+                              'Kwon Kyoung min',
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: const [
+                                Icon(
+                                  Icons.attach_money_outlined,
+                                  size: 50,
+                                ),
+                                Text(
+                                  "104,235,235",
+                                  style: TextStyle(
+                                    fontSize: 50,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 30,
+                      horizontal: 20,
+                    ),
+                    child: Container(
+                      height: 100,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.green,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  'your percentage in mouth',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Container(
+                                  height: 10,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.black,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            topLeft: Radius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        fit: FlexFit.tight,
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius: BorderRadius.only(
+                                              bottomRight: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
-          )
-        ],
+          ),
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Transform(
+              transform: Matrix4.translationValues(
+                0,
+                _translateButton.value * 4,
+                0,
+              ),
+              child: SizedBox(
+                width: 75,
+                height: 75,
+                child: FloatingActionButton(
+                  heroTag: "email",
+                  backgroundColor: Colors.green,
+                  onPressed: () {},
+                  child: const Icon(
+                    size: 40,
+                    Icons.email,
+                  ),
+                ),
+              ),
+            ),
+            Transform(
+              transform: Matrix4.translationValues(
+                0,
+                _translateButton.value * 3,
+                0,
+              ),
+              child: SizedBox(
+                width: 75,
+                height: 75,
+                child: FloatingActionButton(
+                  heroTag: "call",
+                  backgroundColor: Colors.green,
+                  onPressed: () {/* Do something */},
+                  child: const Icon(
+                    size: 40,
+                    Icons.call,
+                  ),
+                ),
+              ),
+            ),
+            Transform(
+              transform: Matrix4.translationValues(
+                0,
+                _translateButton.value * 2,
+                0,
+              ),
+              child: SizedBox(
+                width: 75,
+                height: 75,
+                child: FloatingActionButton(
+                  heroTag: "message",
+                  backgroundColor: Colors.green,
+                  onPressed: () {/* Do something */},
+                  child: const Icon(
+                    Icons.message,
+                    size: 40,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 15,
+              ),
+              child: SizedBox(
+                height: 75,
+                width: 75,
+                child: FloatingActionButton(
+                  heroTag: "menu",
+                  backgroundColor: Colors.green,
+                  onPressed: _toggle,
+                  child: AnimatedIcon(
+                    size: 40,
+                    icon: AnimatedIcons.menu_close,
+                    progress: _buttonAniatedIcon,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
