@@ -19,8 +19,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   String result = 'Take Picture Again';
 
   Future<String> getResult() async {
-    String server = "ip addr";
-    String restPort = "port";
+    String server = "121.169.44.47";
+    String restPort = "13285";
     var imageFile = File(widget.imagePath);
     List<int> imageBytes = imageFile.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);
