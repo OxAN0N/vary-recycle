@@ -114,9 +114,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
                 return Column(
                   children: [
-                    SizedBox(
-                      height: 5 * ratio,
-                    ),
+                    // SizedBox(
+                    //   height: 5 * ratio,
+                    // ),
                     Text(
                       '분리수거 할 물건을 촬영해주세요.',
                       style: TextStyle(
@@ -125,9 +125,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(
-                      height: 5 * ratio,
-                    ),
+                    // SizedBox(
+                    //   height: 5 * ratio,
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

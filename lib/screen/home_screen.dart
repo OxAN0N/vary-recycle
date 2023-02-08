@@ -2,6 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:vary_recycle/screen/barcode_scan_screen.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -85,8 +87,23 @@ class _HomeScreenState extends State<HomeScreen>
     _isExpanded = !_isExpanded;
   }
 
+  Future addUserDetails(String userName, int credit, String userID) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'name': userName,
+      'credit': credit,
+      'userID': userID,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    const int credit = 10000;
+    late dynamic userName =
+        FirebaseAuth.instance.currentUser?.displayName ?? "NaN";
+    late dynamic userID = FirebaseAuth.instance.currentUser?.uid ?? "NaN";
+
+    addUserDetails(userName, credit, userID);
+
     return GestureDetector(
       onTap: () {
         textFoucs.unfocus();
@@ -190,10 +207,10 @@ class _HomeScreenState extends State<HomeScreen>
                     Column(
                       children: [
                         IconButton(
-                          iconSize: 100,
+                          iconSize: 120,
                           onPressed: () => _openCameraPage('paper'),
                           icon: Image.asset(
-                            "assets/paper.png",
+                            "assets/plastic.png",
                           ),
                         ),
                         const Text(
@@ -292,14 +309,15 @@ class _HomeScreenState extends State<HomeScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(
+                        Padding(
+                          padding: const EdgeInsets.only(
                             left: 15,
                             bottom: 20,
                           ),
                           child: Text(
-                            'Kwon Kyoung min',
-                            style: TextStyle(
+                            FirebaseAuth.instance.currentUser?.displayName ??
+                                "NAN",
+                            style: const TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -313,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 size: 50,
                               ),
                               Text(
-                                "104,235,235",
+                                '$credit',
                                 style: TextStyle(
                                   fontSize: 50,
                                   fontWeight: FontWeight.w500,
