@@ -190,14 +190,14 @@ class _HomeScreenState extends State<HomeScreen>
                     Column(
                       children: [
                         IconButton(
-                          iconSize: 120,
-                          onPressed: () => _openCameraPage('plastic'),
+                          iconSize: 100,
+                          onPressed: () => _openCameraPage('paper'),
                           icon: Image.asset(
-                            "assets/plastic.png",
+                            "assets/paper.png",
                           ),
                         ),
                         const Text(
-                          'plastic',
+                          'paper',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w500,
