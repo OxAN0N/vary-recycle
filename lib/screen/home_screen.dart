@@ -81,11 +81,25 @@ class _HomeScreenState extends State<HomeScreen>
                 ))));
   }
 
-  Future<String> ReturnValue(String info) async {
+  Future<dynamic> ReturnValue(String info) async {
     final usercol = FirebaseFirestore.instance;
     final result = await usercol.collection('user').doc('$myUid').get();
     var list = result.data();
     return list?[info];
+  }
+
+  Future addUserDetails(
+    String userName,
+    int credit,
+  ) async {
+    final usercol = FirebaseFirestore.instance;
+    final result = await usercol.collection('user').doc('$myUid').get();
+    if (result.data() == null) {
+      await FirebaseFirestore.instance.collection('user').doc('$myUid').set({
+        'name': userName,
+        'credit': credit,
+      });
+    }
   }
 
   @override
@@ -132,6 +146,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    late dynamic userName =
+        FirebaseAuth.instance.currentUser?.displayName ?? "NaN";
+    addUserDetails(userName, 18274972);
+
     return GestureDetector(
       onTap: () {
         textFoucs.unfocus();
@@ -153,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen>
             IconButton(
               onPressed: () {
                 //ReturnValue('credit');
-                //FirebaseAuth.instance.signOut();
+                FirebaseAuth.instance.signOut();
               },
               icon: const Icon(
                 Icons.favorite,
@@ -199,10 +217,10 @@ class _HomeScreenState extends State<HomeScreen>
                     Column(
                       children: [
                         IconButton(
-                          iconSize: 100,
+                          iconSize: 120,
                           onPressed: () => _openCameraPage('paper'),
                           icon: Image.asset(
-                            "assets/paper.png",
+                            "assets/plastic.png",
                           ),
                         ),
                         const Text(
@@ -350,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     );
                                   }
                                 },
-                              ),
+                              )
                             ],
                           ),
                         ),
