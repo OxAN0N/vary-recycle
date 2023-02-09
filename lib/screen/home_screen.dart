@@ -343,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     return Text(
                                       "${snapshot.data}",
                                       style: const TextStyle(
-                                        fontSize: 30,
+                                        fontSize: 50,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     );
