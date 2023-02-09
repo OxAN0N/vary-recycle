@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   bool _isExpanded = false;
 
-  void _openCameraPage() async {
+  void _openCameraPage(String recycleType) async {
     final cameras = await availableCameras();
     final firstCamera = cameras.first;
 
@@ -68,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen>
         MaterialPageRoute(
             builder: (context) => TakePictureScreen(
                   camera: firstCamera,
+                  recycleType: recycleType,
                 )));
   }
 
@@ -129,8 +130,23 @@ class _HomeScreenState extends State<HomeScreen>
     _isExpanded = !_isExpanded;
   }
 
+  Future addUserDetails(String userName, int credit, String userID) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'name': userName,
+      'credit': credit,
+      'userID': userID,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    const int credit = 10000;
+    late dynamic userName =
+        FirebaseAuth.instance.currentUser?.displayName ?? "NaN";
+    late dynamic userID = FirebaseAuth.instance.currentUser?.uid ?? "NaN";
+
+    addUserDetails(userName, credit, userID);
+
     return GestureDetector(
       onTap: () {
         textFoucs.unfocus();
@@ -199,13 +215,13 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         IconButton(
                           iconSize: 120,
-                          onPressed: _openCameraPage,
+                          onPressed: () => _openCameraPage('paper'),
                           icon: Image.asset(
                             "assets/plastic.png",
                           ),
                         ),
                         const Text(
-                          'plastic',
+                          'paper',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w500,
@@ -217,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         IconButton(
                           iconSize: 100,
-                          onPressed: _openCameraPage,
+                          onPressed: () => _openCameraPage('can'),
                           icon: Image.asset(
                             "assets/can.png",
                           ),
@@ -240,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         IconButton(
                           iconSize: 120,
-                          onPressed: _openCameraPage,
+                          onPressed: () => _openCameraPage('glass'),
                           icon: Image.asset(
                             "assets/glass.png",
                           ),
@@ -258,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         IconButton(
                           iconSize: 110,
-                          onPressed: _openCameraPage,
+                          onPressed: () => _openCameraPage('pet'),
                           icon: Image.asset(
                             "assets/pet.png",
                           ),
@@ -349,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     );
                                   }
                                 },
-                              ),
+                              )
                             ],
                           ),
                         ),
