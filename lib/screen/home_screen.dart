@@ -1,7 +1,14 @@
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vary_recycle/screen/barcode_scan_screen.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+final User? user = auth.currentUser;
+final myUid = user?.uid;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,15 +16,45 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+/*
+class GetUserName extends StatelessWidget {
+  final String documentId;
+  const GetUserName(this.documentId);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference user = FirebaseFirestore.instance.collection('user');
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: user.doc(documentId).get(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return const Text("Document does not exist");
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          return Text("asdf: ${data['credit']}");
+        }
+        return const Text("loading");
+      },
+    );
+  }
+}*/
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   TextEditingController SearchWord = TextEditingController();
   FocusNode textFoucs = FocusNode();
-
   late AnimationController _animationController;
   late Animation<double> _buttonAniatedIcon;
   late Animation<double> _translateButton;
+  late GoogleSignInAuthentication googleAuth;
+  CollectionReference product = FirebaseFirestore.instance.collection('user');
 
   bool _isExpanded = false;
 
@@ -43,6 +80,13 @@ class _HomeScreenState extends State<HomeScreen>
                 ))));
   }
 
+  Future<String> ReturnValue(String info) async {
+    final usercol = FirebaseFirestore.instance;
+    final result = await usercol.collection('user').doc('$myUid').get();
+    var list = result.data();
+    return list?[info];
+  }
+
   @override
   void initState() {
     SearchWord.addListener(_printSearchText);
@@ -61,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen>
       parent: _animationController,
       curve: Curves.easeInOut,
     ));
+
     super.initState();
   }
 
@@ -105,7 +150,10 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                //ReturnValue('credit');
+                //FirebaseAuth.instance.signOut();
+              },
               icon: const Icon(
                 Icons.favorite,
                 size: 30,
@@ -124,47 +172,8 @@ class _HomeScreenState extends State<HomeScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Flexible(
-                      child: TextField(
-                        focusNode: textFoucs,
-                        textInputAction: TextInputAction.go,
-                        onSubmitted: (value) {
-                          textFoucs.unfocus();
-                        },
-                        controller: SearchWord,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          labelText: "Search",
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.green,
-                              width: 4,
-                            ),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.black,
-                              size: 35,
-                            ),
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: SearchWord.clear,
-                            icon: const Icon(
-                              Icons.cancel,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: Search_Area(
+                          textFoucs: textFoucs, SearchWord: SearchWord),
                     ),
                     const SizedBox(
                       width: 20,
@@ -291,32 +300,55 @@ class _HomeScreenState extends State<HomeScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(
+                        Padding(
+                          padding: const EdgeInsets.only(
                             left: 15,
                             bottom: 20,
                           ),
-                          child: Text(
-                            'Kwon Kyoung min',
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w500),
+                          child: FutureBuilder(
+                            future: ReturnValue('name'),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData == false) {
+                                return const CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return const Text("error");
+                              } else {
+                                return Text(
+                                  '${snapshot.data}',
+                                  style: const TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w500),
+                                );
+                              }
+                            },
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: const [
-                              Icon(
+                            children: [
+                              const Icon(
                                 Icons.attach_money_outlined,
                                 size: 50,
                               ),
-                              Text(
-                                "104,235,235",
-                                style: TextStyle(
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              FutureBuilder(
+                                future: ReturnValue('credit'),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData == false) {
+                                    return const CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    return const Text("error");
+                                  } else {
+                                    return Text(
+                                      "${snapshot.data}",
+                                      style: const TextStyle(
+                                        fontSize: 50,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -355,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen>
                           child: Column(
                             children: [
                               const Text(
-                                'your percentage in mouth',
+                                'your percentage in month',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
@@ -497,3 +529,84 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 }
+
+class Search_Area extends StatelessWidget {
+  const Search_Area({
+    Key? key,
+    required this.textFoucs,
+    required this.SearchWord,
+  }) : super(key: key);
+
+  final FocusNode textFoucs;
+  final TextEditingController SearchWord;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      focusNode: textFoucs,
+      textInputAction: TextInputAction.go,
+      onSubmitted: (value) {
+        textFoucs.unfocus();
+      },
+      controller: SearchWord,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        labelText: "Search",
+        labelStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.green,
+            width: 4,
+          ),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        prefixIcon: const Padding(
+          padding: EdgeInsets.only(left: 15),
+          child: Icon(
+            Icons.search,
+            color: Colors.black,
+            size: 35,
+          ),
+        ),
+        suffixIcon: IconButton(
+          onPressed: SearchWord.clear,
+          icon: const Icon(
+            Icons.cancel,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+/*
+StreamBuilder(
+          stream: product.snapshots(),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+            if (streamSnapshot.hasData) {
+              return ListView.builder(
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                      streamSnapshot.data!.docs[index];
+                  return Card(
+                    child: ListTile(
+                      title: Text(documentSnapshot['asdf']),
+                    ),
+                  );
+                },
+              );
+            }
+            return const CircularProgressIndicator();
+          },
+        ),*/
