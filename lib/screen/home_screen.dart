@@ -81,11 +81,25 @@ class _HomeScreenState extends State<HomeScreen>
                 ))));
   }
 
-  Future<String> ReturnValue(String info) async {
+  Future<dynamic> ReturnValue(String info) async {
     final usercol = FirebaseFirestore.instance;
     final result = await usercol.collection('user').doc('$myUid').get();
     var list = result.data();
     return list?[info];
+  }
+
+  Future addUserDetails(
+    String userName,
+    int credit,
+  ) async {
+    final usercol = FirebaseFirestore.instance;
+    final result = await usercol.collection('user').doc('$myUid').get();
+    if (result.data() == null) {
+      await FirebaseFirestore.instance.collection('user').doc('$myUid').set({
+        'name': userName,
+        'credit': credit,
+      });
+    }
   }
 
   @override
@@ -130,22 +144,11 @@ class _HomeScreenState extends State<HomeScreen>
     _isExpanded = !_isExpanded;
   }
 
-  Future addUserDetails(String userName, int credit, String userID) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'name': userName,
-      'credit': credit,
-      'userID': userID,
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    const int credit = 10000;
     late dynamic userName =
         FirebaseAuth.instance.currentUser?.displayName ?? "NaN";
-    late dynamic userID = FirebaseAuth.instance.currentUser?.uid ?? "NaN";
-
-    addUserDetails(userName, credit, userID);
+    addUserDetails(userName, 18274972);
 
     return GestureDetector(
       onTap: () {
@@ -168,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen>
             IconButton(
               onPressed: () {
                 //ReturnValue('credit');
-                //FirebaseAuth.instance.signOut();
+                FirebaseAuth.instance.signOut();
               },
               icon: const Icon(
                 Icons.favorite,
