@@ -80,72 +80,18 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         title:
             Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         elevation: 0.0,
       ),
       extendBodyBehindAppBar: true,
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Expanded(
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            final width = constraints.maxWidth;
-            final height = constraints.maxHeight;
-            final ratio = width / height;
-            return Column(
-              children: [
-                Image.file(File(widget.imagePath)),
-                SizedBox(
-                  height: 50 * ratio,
-                ),
-                Text(
-                  '해당 사진으로 선택하시겠어요?',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontSize: 35 * ratio,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 45 * ratio,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                      child: Text(
-                        '다시 찍기',
-                        style: TextStyle(
-                          fontSize: 45 * ratio,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: onConfirmTap, // 이미지 서버 storage로 보내기
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                      child: Text(
-                        '확인',
-                        style: TextStyle(
-                          fontSize: 45 * ratio,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            );
-          },
-        ),
+      backgroundColor: Colors.black,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.file(File(widget.imagePath)),
+        ],
       ),
     );
   }

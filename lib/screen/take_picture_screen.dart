@@ -81,21 +81,21 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         title:
             Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         elevation: 0.0,
       ),
       extendBodyBehindAppBar: true,
-      // You must wait until the controller is initialized before displaying the
-      // camera preview. Use a FutureBuilder to display a loading spinner until the
-      // controller has finished initializing.
+      backgroundColor: Colors.black,
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FutureBuilder<void>(
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 // If the Future is complete, display the preview.
-                return CameraPreview(_controller);
+                return GestureDetector(
+                    onTap: onCameraTap, child: CameraPreview(_controller));
               } else {
                 // Otherwise, display a loading indicator.
                 return const Center(
@@ -105,91 +105,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               }
             },
           ),
-          Expanded(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                final width = constraints.maxWidth;
-                final height = constraints.maxHeight;
-                final ratio = width / height;
-
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 5 * ratio,
-                    ),
-                    Text(
-                      '분리수거 할 물건을 촬영해주세요.',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 7 * ratio,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5 * ratio,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 20 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.subdirectory_arrow_left_rounded,
-                                size: 7 * ratio,
-                              ),
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 30 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: onCameraTap,
-                              icon: const Icon(Icons.camera_alt_outlined),
-                              iconSize: 15 * ratio,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 20 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: () {}, // 갤러리 할까말까 고민 중
-                              icon: const Icon(Icons.photo_library_rounded),
-                              iconSize: 7 * ratio,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                );
-              },
-            ),
-          )
         ],
       ),
     );
