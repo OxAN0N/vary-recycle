@@ -11,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
 final myUid = user?.uid;
-int a = 3;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
