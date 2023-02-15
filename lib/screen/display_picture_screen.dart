@@ -1,9 +1,9 @@
-// A widget that displays the picture taken by the user.
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_fonts/google_fonts.dart';
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
@@ -19,8 +19,8 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   String result = 'Take Picture Again';
 
   Future<String> getResult() async {
-    String server = "ip addr";
-    String restPort = "port";
+    String server = "121.169.44.47";
+    String restPort = "13285";
     var imageFile = File(widget.imagePath);
     List<int> imageBytes = imageFile.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);
@@ -76,81 +76,66 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(190, 255, 255, 255),
       appBar: AppBar(
         title:
             Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         elevation: 0.0,
       ),
       extendBodyBehindAppBar: true,
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Expanded(
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            final width = constraints.maxWidth;
-            final height = constraints.maxHeight;
-            final ratio = width / height;
-            return Column(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.file(File(widget.imagePath)),
+            ],
+          ),
+          Align(
+            alignment: const Alignment(0, 1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  flex: 4,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                    ),
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: Expanded(
-                      child: Image.file(
-                        fit: BoxFit.cover,
-                        File(widget.imagePath),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 30,
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "재촬영",
+                      style: GoogleFonts.varelaRound(
+                        color: Colors.white,
+                        fontSize: 30,
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.green,
-                        ),
-                        child: Text(
-                          '다시 찍기',
-                          style: TextStyle(
-                            fontSize: 45 * ratio,
-                            color: Colors.white,
-                          ),
-                        ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                  ),
+                  child: TextButton(
+                    onPressed: onConfirmTap,
+                    child: Text(
+                      "확인",
+                      style: GoogleFonts.varelaRound(
+                        color: Colors.white,
+                        fontSize: 30,
                       ),
-                      TextButton(
-                        onPressed: onConfirmTap, // 이미지 서버 storage로 보내기
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.green,
-                        ),
-                        child: Text(
-                          '확인',
-                          style: TextStyle(
-                            fontSize: 45 * ratio,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 )
               ],
-            );
-          },
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }

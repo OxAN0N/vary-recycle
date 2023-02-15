@@ -81,21 +81,21 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         title:
             Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         elevation: 0.0,
       ),
       extendBodyBehindAppBar: true,
-      // You must wait until the controller is initialized before displaying the
-      // camera preview. Use a FutureBuilder to display a loading spinner until the
-      // controller has finished initializing.
+      backgroundColor: Colors.black,
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FutureBuilder<void>(
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 // If the Future is complete, display the preview.
-                return CameraPreview(_controller);
+                return GestureDetector(
+                    onTap: onCameraTap, child: CameraPreview(_controller));
               } else {
                 // Otherwise, display a loading indicator.
                 return const Center(
@@ -106,6 +106,20 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             },
           ),
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 30,
+        ),
+        child: SizedBox(
+          height: 80,
+          width: 80,
+          child: FloatingActionButton(
+              backgroundColor: const Color.fromARGB(190, 255, 255, 255),
+              onPressed: onCameraTap,
+              child: const SizedBox()),
+        ),
       ),
     );
   }
