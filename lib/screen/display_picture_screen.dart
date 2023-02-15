@@ -76,6 +76,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(190, 255, 255, 255),
       appBar: AppBar(
         title:
             Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
@@ -94,53 +95,57 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             final ratio = width / height;
             return Column(
               children: [
-                Image.file(File(widget.imagePath)),
-                SizedBox(
-                  height: 50 * ratio,
-                ),
-                Text(
-                  '해당 사진으로 선택하시겠어요?',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontSize: 35 * ratio,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                    ),
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Expanded(
+                      child: Image.file(
+                        fit: BoxFit.cover,
+                        File(widget.imagePath),
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 45 * ratio,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                      child: Text(
-                        '다시 찍기',
-                        style: TextStyle(
-                          fontSize: 45 * ratio,
-                          color: Colors.white,
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.green,
+                        ),
+                        child: Text(
+                          '다시 찍기',
+                          style: TextStyle(
+                            fontSize: 45 * ratio,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: onConfirmTap, // 이미지 서버 storage로 보내기
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.green,
-                      ),
-                      child: Text(
-                        '확인',
-                        style: TextStyle(
-                          fontSize: 45 * ratio,
-                          color: Colors.white,
+                      TextButton(
+                        onPressed: onConfirmTap, // 이미지 서버 storage로 보내기
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.green,
+                        ),
+                        child: Text(
+                          '확인',
+                          style: TextStyle(
+                            fontSize: 45 * ratio,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               ],
             );

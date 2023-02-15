@@ -49,7 +49,8 @@ class _QrBarcodeScannerState extends State<QrBarcodeScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('물건의 QR/바코드를 인식해주세요'),
+        centerTitle: true,
+        title: const Text('QR/바코드를 인식해주세요'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
