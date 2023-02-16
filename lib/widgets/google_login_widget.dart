@@ -27,12 +27,18 @@ class GoogleLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SignInButton(
-      Buttons.Google,
-      onPressed: () {
-        signInWithGoogle();
-      },
-      text: "Sign up with Google",
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SignInButton(
+          Buttons.Google,
+          onPressed: () {
+            signInWithGoogle();
+          },
+          text: "Sign in with Google",
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        ),
+      ],
     );
   }
 }
