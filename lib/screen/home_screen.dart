@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rive/rive.dart';
 import 'package:vary_recycle/screen/User_page.dart';
 import 'package:vary_recycle/screen/barcode_scan_screen.dart';
 import 'package:vary_recycle/screen/settings_page.dart';
@@ -89,7 +90,6 @@ class _HomeScreenState extends State<HomeScreen>
     var list = result.data();
     return list?[info];
   }
-
 
   Future addUserDetails(
     String userName,
@@ -197,10 +197,20 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
               ),
-              otherAccountsPictures: const <Widget>[
+              otherAccountsPictures: <Widget>[
                 CircleAvatar(
                   backgroundColor: Colors.white,
-                  child: Text("abc"),
+                  child: Transform.scale(
+                    scale: 2.5,
+                    child: Transform.translate(
+                      offset: const Offset(1.5, 3),
+                      child: const RiveAnimation.asset(
+                        "assets/RiveAssets/4390-9001-gdsc-logo-animation.riv",
+                        fit: BoxFit.fill,
+                        alignment: Alignment.center,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

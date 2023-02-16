@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rive/rive.dart';
 import 'package:vary_recycle/screen/update_profile_screen.dart';
 
 class UserPage extends StatelessWidget {
@@ -10,13 +11,18 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          color: const Color(0xFFffc859),
+          onPressed: () => Get.back(),
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.green,
-        elevation: 1,
-        title: const Text(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
           "Profile",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.grey.shade800,
           ),
         ),
       ),
@@ -83,7 +89,12 @@ class UserPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               const Divider(),
-              const SizedBox(height: 30),
+              const SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: RiveAnimation.asset(
+                      "assets/RiveAssets/2131-4192-coin.riv")),
+              const SizedBox(height: 15),
               const Text(
                 "Credits",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
