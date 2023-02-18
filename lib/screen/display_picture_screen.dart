@@ -112,7 +112,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                       "재촬영",
                       style: GoogleFonts.varelaRound(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: 25,
                       ),
                     ),
                   ),
@@ -127,7 +127,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
                       "확인",
                       style: GoogleFonts.varelaRound(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: 25,
                       ),
                     ),
                   ),
