@@ -107,6 +107,20 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 30,
+        ),
+        child: SizedBox(
+          height: 80,
+          width: 80,
+          child: FloatingActionButton(
+              backgroundColor: const Color.fromARGB(190, 255, 255, 255),
+              onPressed: onCameraTap,
+              child: const SizedBox()),
+        ),
+      ),
     );
   }
 }

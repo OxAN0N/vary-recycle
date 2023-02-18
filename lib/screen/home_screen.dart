@@ -1,7 +1,17 @@
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:vary_recycle/screen/User_page.dart';
 import 'package:vary_recycle/screen/barcode_scan_screen.dart';
+import 'package:vary_recycle/screen/settings_page.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+final User? user = auth.currentUser;
+final myUid = user?.uid;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,12 +24,10 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   TextEditingController SearchWord = TextEditingController();
   FocusNode textFoucs = FocusNode();
-
   late AnimationController _animationController;
-  late Animation<double> _buttonAniatedIcon;
-  late Animation<double> _translateButton;
-
-  bool _isExpanded = false;
+  late GoogleSignInAuthentication googleAuth;
+  CollectionReference product = FirebaseFirestore.instance.collection('user');
+  final int _currentIndex = 1;
 
   void _openCameraPage(String recycleType) async {
     final cameras = await availableCameras();
@@ -44,24 +52,34 @@ class _HomeScreenState extends State<HomeScreen>
                 ))));
   }
 
+  Future<dynamic> ReturnValue(String info) async {
+    final usercol = FirebaseFirestore.instance;
+    final result = await usercol.collection('user').doc('$myUid').get();
+    var list = result.data();
+    return list?[info];
+  }
+
+  Future addUserDetails(
+    String userName,
+    int credit,
+  ) async {
+    final usercol = FirebaseFirestore.instance;
+    final result = await usercol.collection('user').doc('$myUid').get();
+    if (result.data() == null) {
+      await FirebaseFirestore.instance.collection('user').doc('$myUid').set({
+        'name': userName,
+        'credit': credit,
+      });
+    }
+  }
+
   @override
   void initState() {
-    SearchWord.addListener(_printSearchText);
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 600))
       ..addListener(() {
         setState(() {});
       });
-
-    _buttonAniatedIcon =
-        Tween<double>(begin: 0, end: 1).animate(_animationController);
-    _translateButton = Tween<double>(
-      begin: 100,
-      end: -20,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
     super.initState();
   }
 
@@ -71,22 +89,12 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
-  void _printSearchText() {
-    print("print Search field ${SearchWord.text}");
-  }
-
-  _toggle() {
-    if (_isExpanded) {
-      _animationController.reverse();
-    } else {
-      _animationController.forward();
-    }
-
-    _isExpanded = !_isExpanded;
-  }
-
   @override
   Widget build(BuildContext context) {
+    late dynamic userName =
+        FirebaseAuth.instance.currentUser?.displayName ?? "NaN";
+    addUserDetails(userName, 18274972);
+
     return GestureDetector(
       onTap: () {
         textFoucs.unfocus();
@@ -94,405 +102,369 @@ class _HomeScreenState extends State<HomeScreen>
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          elevation: 10,
-          backgroundColor: Colors.green,
-          title: const Text(
-            'Vary Recycle',
-            style: TextStyle(
+          toolbarHeight: 40,
+          iconTheme: const IconThemeData(
+            color: Color.fromARGB(255, 107, 255, 112),
+            size: 40,
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Text(
+            '',
+            style: GoogleFonts.varelaRound(
               fontSize: 30,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w600,
               color: Colors.black,
             ),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite,
-                size: 30,
-                color: Colors.black,
-              ),
-            )
-          ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Flexible(
-                      child: TextField(
-                        focusNode: textFoucs,
-                        textInputAction: TextInputAction.go,
-                        onSubmitted: (value) {
-                          textFoucs.unfocus();
-                        },
-                        controller: SearchWord,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          labelText: "Search",
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.green,
-                              width: 4,
-                            ),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.black,
-                              size: 35,
-                            ),
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: SearchWord.clear,
-                            icon: const Icon(
-                              Icons.cancel,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.qr_code_scanner),
-                      iconSize: 40,
-                      onPressed: _openBarcodeScanner,
-                    ),
-                  ],
+        endDrawer: Drawer(
+          elevation: 16.0,
+          child: Column(children: <Widget>[
+            UserAccountsDrawerHeader(
+              onDetailsPressed: () {
+                print('press details');
+              },
+              decoration: const BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  )),
+              accountName: Text(userName),
+              accountEmail:
+                  Text(FirebaseAuth.instance.currentUser?.email ?? "NaN"),
+              currentAccountPicture: CircleAvatar(
+                radius: 10.0,
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: Image.network(
+                    FirebaseAuth.instance.currentUser?.photoURL ?? "NaN",
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                          iconSize: 100,
-                          onPressed: () => _openCameraPage('paper'),
-                          icon: Image.asset(
-                            "assets/paper.png",
-                          ),
-                        ),
-                        const Text(
-                          'paper',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          iconSize: 100,
-                          onPressed: () => _openCameraPage('can'),
-                          icon: Image.asset(
-                            "assets/can.png",
-                          ),
-                        ),
-                        const Text(
-                          'can',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                          iconSize: 120,
-                          onPressed: () => _openCameraPage('glass'),
-                          icon: Image.asset(
-                            "assets/glass.png",
-                          ),
-                        ),
-                        const Text(
-                          'glass',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          iconSize: 110,
-                          onPressed: () => _openCameraPage('pet'),
-                          icon: Image.asset(
-                            "assets/pet.png",
-                          ),
-                        ),
-                        const Text(
-                          'pet',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.green,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 15,
-                            bottom: 20,
-                          ),
-                          child: Text(
-                            'Kwon Kyoung min',
-                            style: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: const [
-                              Icon(
-                                Icons.attach_money_outlined,
-                                size: 50,
-                              ),
-                              Text(
-                                "104,235,235",
-                                style: TextStyle(
-                                  fontSize: 50,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 30,
-                    horizontal: 20,
-                  ),
-                  child: Container(
-                    height: 100,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.green,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                          ),
-                          child: Column(
-                            children: [
-                              const Text(
-                                'your percentage in mouth',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Container(
-                                height: 10,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.black,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(20),
-                                          topLeft: Radius.circular(20),
-                                        ),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      fit: FlexFit.tight,
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(20),
-                                            topRight: Radius.circular(20),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+              otherAccountsPictures: const <Widget>[
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Text("abc"),
                 ),
               ],
             ),
+            ListTile(
+              title: const Text("Setting"),
+              leading: const Icon(Icons.settings),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SettingPage()));
+              },
+            ),
+            ListTile(
+              title: const Text("Profile"),
+              leading: const Icon(Icons.person),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const UserPage()));
+              },
+            ),
+            const SizedBox(
+              height: 320,
+            ),
+            ListTile(
+              title: const Text("Logout"),
+              leading: const Icon(Icons.logout),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+              },
+            )
+          ]),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: FutureBuilder(
+                future: ReturnValue('name'),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData == false) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Text("error");
+                  } else {
+                    return Center(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        '${snapshot.data}',
+                        style: GoogleFonts.varelaRound(
+                          shadows: [
+                            const Shadow(
+                                /*blurRadius: 30,
+                              color: Colors.grey,
+                              offset: Offset(5, 5),
+                            */
+                                )
+                          ],
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: FutureBuilder(
+                future: ReturnValue('credit'),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData == false) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Text("error");
+                  } else {
+                    return Center(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        '+ ${snapshot.data}%',
+                        style: GoogleFonts.varelaRound(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: const Color.fromARGB(255, 107, 255, 112),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: FutureBuilder(
+                future: ReturnValue('credit'),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData == false) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Text("error");
+                  } else {
+                    return Center(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        '\$${snapshot.data}',
+                        style: GoogleFonts.varelaRound(
+                          shadows: [
+                            const Shadow(
+                                /*blurRadius: 20,
+                              color: Colors.grey,
+                              offset: Offset(2, 2),
+                            */
+                                )
+                          ],
+                          fontSize: 40,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                child: Center(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    "your credit",
+                    style: GoogleFonts.varelaRound(
+                      color: Colors.grey,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 8,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: const Color.fromARGB(255, 232, 231, 231),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(17),
+                          child: Column(
+                            children: [
+                              IconButton(
+                                iconSize: 80,
+                                onPressed: () => _openCameraPage('paper'),
+                                icon: Image.asset(
+                                  color: Colors.black,
+                                  "assets/paper.png",
+                                ),
+                              ),
+                              Text(
+                                'paper',
+                                style: GoogleFonts.varelaRound(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: const Color.fromARGB(255, 232, 231, 231),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(17),
+                          child: Column(
+                            children: [
+                              IconButton(
+                                iconSize: 80,
+                                onPressed: () => _openCameraPage('can'),
+                                icon: Image.asset(
+                                  "assets/can.png",
+                                ),
+                              ),
+                              Text(
+                                'can',
+                                style: GoogleFonts.varelaRound(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: const Color.fromARGB(255, 232, 231, 231),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(17),
+                          child: Column(
+                            children: [
+                              IconButton(
+                                iconSize: 80,
+                                onPressed: () => _openCameraPage('glass'),
+                                icon: Image.asset(
+                                  "assets/glass.png",
+                                ),
+                              ),
+                              Text(
+                                'glass',
+                                style: GoogleFonts.varelaRound(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          color: const Color.fromARGB(255, 232, 231, 231),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(17),
+                          child: Column(
+                            children: [
+                              IconButton(
+                                iconSize: 80,
+                                onPressed: () => _openCameraPage('pet'),
+                                icon: Image.asset(
+                                  "assets/pet.png",
+                                ),
+                              ),
+                              Text(
+                                'pet',
+                                style: GoogleFonts.varelaRound(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Transform(
-              transform: Matrix4.translationValues(
-                0,
-                _translateButton.value * 4,
-                0,
-              ),
-              child: SizedBox(
-                width: 75,
-                height: 75,
-                child: FloatingActionButton(
-                  heroTag: "email",
-                  backgroundColor: Colors.green,
-                  onPressed: () {},
-                  child: const Icon(
-                    size: 40,
-                    Icons.email,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: SizedBox(
+          height: 100,
+          width: 100,
+          child: FloatingActionButton(
+            backgroundColor: const Color.fromARGB(255, 232, 231, 231),
+            onPressed: _openBarcodeScanner,
+            child: const Icon(
+              Icons.qr_code_2_rounded,
+              size: 70,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 4,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              SizedBox(
+                height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 50),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.menu,
+                      size: 50,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Transform(
-              transform: Matrix4.translationValues(
-                0,
-                _translateButton.value * 3,
-                0,
-              ),
-              child: SizedBox(
-                width: 75,
-                height: 75,
-                child: FloatingActionButton(
-                  heroTag: "call",
-                  backgroundColor: Colors.green,
-                  onPressed: () {/* Do something */},
-                  child: const Icon(
-                    size: 40,
-                    Icons.call,
+              SizedBox(
+                height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 50),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.menu,
+                      size: 50,
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Transform(
-              transform: Matrix4.translationValues(
-                0,
-                _translateButton.value * 2,
-                0,
-              ),
-              child: SizedBox(
-                width: 75,
-                height: 75,
-                child: FloatingActionButton(
-                  heroTag: "message",
-                  backgroundColor: Colors.green,
-                  onPressed: () {/* Do something */},
-                  child: const Icon(
-                    Icons.message,
-                    size: 40,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 15,
-              ),
-              child: SizedBox(
-                height: 75,
-                width: 75,
-                child: FloatingActionButton(
-                  heroTag: "menu",
-                  backgroundColor: Colors.green,
-                  onPressed: _toggle,
-                  child: AnimatedIcon(
-                    size: 40,
-                    icon: AnimatedIcons.menu_close,
-                    progress: _buttonAniatedIcon,
-                  ),
-                ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
