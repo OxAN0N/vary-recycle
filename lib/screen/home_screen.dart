@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vary_recycle/screen/User_page.dart';
-import 'package:vary_recycle/screen/barcode_scan_screen.dart';
 import 'package:vary_recycle/screen/settings_page.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,12 +43,12 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _openBarcodeScanner() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: ((context) => const QrBarcodeScanner(
-                  title: "QR/Barcode",
-                ))));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: ((context) => const QrBarcodeScanner(
+    //               title: "QR/Barcode",
+    //             ))));
   }
 
   Future<dynamic> ReturnValue(String info) async {
@@ -93,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     late dynamic userName =
         FirebaseAuth.instance.currentUser?.displayName ?? "NaN";
-    addUserDetails(userName, 18274972);
+    addUserDetails(userName, 0);
 
     return GestureDetector(
       onTap: () {
