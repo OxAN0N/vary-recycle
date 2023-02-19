@@ -41,7 +41,7 @@ dependencies:
   firebase_storage: ^11.0.10
   path_provider: ^2.0.11
   path: ^1.8.2
-  flutter_qr_bar_scanner: ^3.0.2
+  # flutter_qr_bar_scanner: ^3.0.2
   html: ^0.15.1
   cloud_firestore: ^4.3.1
   flutter_slider_drawer: ^2.1.3
@@ -82,8 +82,10 @@ flutter:
     - assets/plastic.png
     - assets/glass.png
     - assets/paper.png
-
-
+    - assets/—Pngtree—green background material for garbage_1194152.jpg
+    - assets/paper2.png
+    - assets/—Pngtree—garbage classification recycling_1039212.jpg
+  
   fonts:
     - family: Caveat
       fonts: 

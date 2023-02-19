@@ -115,7 +115,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                     alignment: const Alignment(0, 0),
                     child: Padding(
                       padding: const EdgeInsets.only(
-                        top: 20,
+                        top: 40,
                       ),
                       child: Container(
                         width: 330,
@@ -137,7 +137,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                   Text(
                                     widget.recycleType.toUpperCase(),
                                     style: GoogleFonts.varelaRound(
-                                      fontSize: 25,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black,
                                     ),
@@ -152,7 +152,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                                     child: Text(
                                       "Remove lid and paper",
                                       style: GoogleFonts.varelaRound(
-                                        fontSize: 20,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.grey,
                                       ),
