@@ -35,7 +35,7 @@ class GoogleLogin extends StatelessWidget {
           onPressed: () {
             signInWithGoogle();
           },
-          text: "Sign in with Google",
+          text: "Sign up with Google",
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         ),
       ],

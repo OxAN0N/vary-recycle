@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart';
 import 'package:vary_recycle/screen/otp_screen.dart';
-import 'package:vary_recycle/src/form_header_widget.dart';
+import 'package:vary_recycle/src/common_widgets/form_header_widget.dart';
 
 class ForgetPassswordMailScreen extends StatelessWidget {
   const ForgetPassswordMailScreen({super.key});
