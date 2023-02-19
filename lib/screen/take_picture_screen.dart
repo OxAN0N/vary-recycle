@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'display_picture_screen.dart';
 
 // A screen that allows users to take a picture using a given camera.
@@ -81,116 +81,129 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         title:
             Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         elevation: 0.0,
       ),
       extendBodyBehindAppBar: true,
-      // You must wait until the controller is initialized before displaying the
-      // camera preview. Use a FutureBuilder to display a loading spinner until the
-      // controller has finished initializing.
-      body: Column(
+      backgroundColor: Colors.black,
+      body: Stack(
         children: [
-          FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                // If the Future is complete, display the preview.
-                return CameraPreview(_controller);
-              } else {
-                // Otherwise, display a loading indicator.
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.black,
-                ));
-              }
-            },
-          ),
-          Expanded(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                final width = constraints.maxWidth;
-                final height = constraints.maxHeight;
-                final ratio = width / height;
-
-                return Column(
-                  children: [
-                    // SizedBox(
-                    //   height: 5 * ratio,
-                    // ),
-                    Text(
-                      '분리수거 할 물건을 촬영해주세요.',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 7 * ratio,
-                        fontWeight: FontWeight.bold,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  FutureBuilder<void>(
+                    future: _initializeControllerFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        // If the Future is complete, display the preview.
+                        return GestureDetector(
+                            onTap: onCameraTap,
+                            child: CameraPreview(_controller));
+                      } else {
+                        // Otherwise, display a loading indicator.
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  Align(
+                    alignment: const Alignment(0, 0),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 40,
+                      ),
+                      child: Container(
+                        width: 330,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 30,
+                                top: 15,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.recycleType.toUpperCase(),
+                                    style: GoogleFonts.varelaRound(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      "Remove lid and paper",
+                                      style: GoogleFonts.varelaRound(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color:
+                                      const Color.fromARGB(255, 77, 183, 245),
+                                ),
+                                child: const Icon(
+                                  size: 35,
+                                  Icons.recycling_outlined,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    // SizedBox(
-                    //   height: 5 * ratio,
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 20 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.subdirectory_arrow_left_rounded,
-                                size: 7 * ratio,
-                              ),
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 30 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: onCameraTap,
-                              icon: const Icon(Icons.camera_alt_outlined),
-                              iconSize: 15 * ratio,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 20 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: () {}, // 갤러리 할까말까 고민 중
-                              icon: const Icon(Icons.photo_library_rounded),
-                              iconSize: 7 * ratio,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                );
-              },
-            ),
-          )
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 30,
+        ),
+        child: SizedBox(
+          height: 80,
+          width: 80,
+          child: FloatingActionButton(
+              backgroundColor: const Color.fromARGB(190, 255, 255, 255),
+              onPressed: onCameraTap,
+              child: const SizedBox()),
+        ),
       ),
     );
   }
