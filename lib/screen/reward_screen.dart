@@ -20,7 +20,7 @@ class RewardScreen extends StatefulWidget {
 class _RewardScreenState extends State<RewardScreen> {
   Future<String> getResult() async {
     String server = "121.169.44.47";
-    String restPort = "13285";
+    String restPort = "13286";
     var imageFile = File(widget.imagePath);
     List<int> imageBytes = imageFile.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);
@@ -45,53 +45,57 @@ class _RewardScreenState extends State<RewardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder(
-      future: getResult(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData == false) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Column(
+      body: FutureBuilder(
+        future: getResult(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData == false) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  (snapshot.data! == 'success') ? 'Success' : 'Fail',
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const HomeScreen()),
-                        (route) => false);
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.green,
-                  ),
-                  child: const Text(
-                    '확인',
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      (snapshot.data! == 'success') ? 'Success' : 'Fail',
+                      style: const TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                )
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const HomeScreen()),
+                            (route) => false);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text(
+                        '확인',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
-            )
-          ]);
-        }
-      },
-    ));
+            );
+          }
+        },
+      ),
+    );
   }
 }

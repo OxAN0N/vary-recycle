@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _animationController;
   late GoogleSignInAuthentication googleAuth;
   CollectionReference product = FirebaseFirestore.instance.collection('user');
-  final int _currentIndex = 1;
 
   void _openCameraPage(String recycleType) async {
     final cameras = await availableCameras();
@@ -99,32 +98,21 @@ class _HomeScreenState extends State<HomeScreen>
         textFoucs.unfocus();
       },
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          toolbarHeight: 40,
           iconTheme: const IconThemeData(
+            size: 30,
             color: Color.fromARGB(255, 107, 255, 112),
-            size: 40,
           ),
-          centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: Text(
-            '',
-            style: GoogleFonts.varelaRound(
-              fontSize: 30,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
         ),
         endDrawer: Drawer(
           elevation: 16.0,
           child: Column(children: <Widget>[
             UserAccountsDrawerHeader(
-              onDetailsPressed: () {
-                print('press details');
-              },
+              onDetailsPressed: () {},
               decoration: const BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.only(
@@ -167,9 +155,7 @@ class _HomeScreenState extends State<HomeScreen>
                     MaterialPageRoute(builder: (context) => const UserPage()));
               },
             ),
-            const SizedBox(
-              height: 320,
-            ),
+            const Expanded(child: ListTile()),
             ListTile(
               title: const Text("Logout"),
               leading: const Icon(Icons.logout),
@@ -179,242 +165,226 @@ class _HomeScreenState extends State<HomeScreen>
             )
           ]),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: FutureBuilder(
-                future: ReturnValue('name'),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData == false) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return const Text("error");
-                  } else {
-                    return Center(
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        '${snapshot.data}',
-                        style: GoogleFonts.varelaRound(
-                          shadows: [
-                            const Shadow(
-                                /*blurRadius: 30,
-                              color: Colors.grey,
-                              offset: Offset(5, 5),
-                            */
-                                )
-                          ],
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(
+                  'assets/—Pngtree—green background material for garbage_1194152.jpg'),
             ),
-            Expanded(
-              flex: 1,
-              child: FutureBuilder(
-                future: ReturnValue('credit'),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData == false) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return const Text("error");
-                  } else {
-                    return Center(
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: FutureBuilder(
+                    future: ReturnValue('name'),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData == false) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Text("error");
+                      } else {
+                        return Center(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            '${snapshot.data}',
+                            style: GoogleFonts.varelaRound(
+                              shadows: [
+                                const Shadow(
+                                    /*blurRadius: 30,
+                                  color: Colors.grey,
+                                  offset: Offset(5, 5),
+                                */
+                                    )
+                              ],
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: FutureBuilder(
+                    future: ReturnValue('credit'),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData == false) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Text("error");
+                      } else {
+                        return Center(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            '+ ${snapshot.data}%',
+                            style: GoogleFonts.varelaRound(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: const Color.fromARGB(255, 107, 255, 112),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: FutureBuilder(
+                    future: ReturnValue('credit'),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData == false) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Text("error");
+                      } else {
+                        return Center(
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            '\$${snapshot.data}',
+                            style: GoogleFonts.varelaRound(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    child: Center(
                       child: Text(
                         textAlign: TextAlign.center,
-                        '+ ${snapshot.data}%',
+                        "your credit",
                         style: GoogleFonts.varelaRound(
+                          color: Colors.grey,
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
-                          color: const Color.fromARGB(255, 107, 255, 112),
                         ),
                       ),
-                    );
-                  }
-                },
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: FutureBuilder(
-                future: ReturnValue('credit'),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData == false) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return const Text("error");
-                  } else {
-                    return Center(
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        '\$${snapshot.data}',
-                        style: GoogleFonts.varelaRound(
-                          shadows: [
-                            const Shadow(
-                                /*blurRadius: 20,
-                              color: Colors.grey,
-                              offset: Offset(2, 2),
-                            */
-                                )
-                          ],
-                          fontSize: 40,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                child: Center(
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    "your credit",
-                    style: GoogleFonts.varelaRound(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              flex: 8,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
+                Expanded(
+                  flex: 8,
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: const Color.fromARGB(255, 232, 231, 231),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(17),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                iconSize: 80,
-                                onPressed: () => _openCameraPage('paper'),
-                                icon: Image.asset(
-                                  color: Colors.black,
-                                  "assets/paper.png",
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(17),
+                            child: Column(
+                              children: [
+                                IconButton(
+                                  iconSize: 80,
+                                  onPressed: () => _openCameraPage('paper'),
+                                  icon: Image.asset(
+                                    color: Colors.black,
+                                    "assets/paper.png",
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'paper',
-                                style: GoogleFonts.varelaRound(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
+                                Text(
+                                  'paper',
+                                  style: GoogleFonts.varelaRound(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(17),
+                            child: Column(
+                              children: [
+                                IconButton(
+                                  iconSize: 80,
+                                  onPressed: () => _openCameraPage('can'),
+                                  icon: Image.asset(
+                                    "assets/can.png",
+                                  ),
+                                ),
+                                Text(
+                                  'can',
+                                  style: GoogleFonts.varelaRound(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: const Color.fromARGB(255, 232, 231, 231),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(17),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                iconSize: 80,
-                                onPressed: () => _openCameraPage('can'),
-                                icon: Image.asset(
-                                  "assets/can.png",
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(17),
+                            child: Column(
+                              children: [
+                                IconButton(
+                                  iconSize: 80,
+                                  onPressed: () => _openCameraPage('glass'),
+                                  icon: Image.asset(
+                                    "assets/glass.png",
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'can',
-                                style: GoogleFonts.varelaRound(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
+                                Text(
+                                  'glass',
+                                  style: GoogleFonts.varelaRound(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              )
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(17),
+                            child: Column(
+                              children: [
+                                IconButton(
+                                  iconSize: 80,
+                                  onPressed: () => _openCameraPage('pet'),
+                                  icon: Image.asset(
+                                    "assets/pet.png",
+                                  ),
+                                ),
+                                Text(
+                                  'pet',
+                                  style: GoogleFonts.varelaRound(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: const Color.fromARGB(255, 232, 231, 231),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(17),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                iconSize: 80,
-                                onPressed: () => _openCameraPage('glass'),
-                                icon: Image.asset(
-                                  "assets/glass.png",
-                                ),
-                              ),
-                              Text(
-                                'glass',
-                                style: GoogleFonts.varelaRound(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: const Color.fromARGB(255, 232, 231, 231),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(17),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                iconSize: 80,
-                                onPressed: () => _openCameraPage('pet'),
-                                icon: Image.asset(
-                                  "assets/pet.png",
-                                ),
-                              ),
-                              Text(
-                                'pet',
-                                style: GoogleFonts.varelaRound(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                const Expanded(
+                  flex: 1,
+                  child: SizedBox(),
+                )
+              ],
             ),
-          ],
-        ),
+          ),
+        ), /*
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: SizedBox(
           height: 100,
@@ -428,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen>
               color: Colors.black,
             ),
           ),
-        ),
+        ), 
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
           notchMargin: 4,
@@ -439,32 +409,34 @@ class _HomeScreenState extends State<HomeScreen>
               SizedBox(
                 height: 100,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 50),
-                  child: IconButton(
+                    padding: const EdgeInsets.only(left: 50),
+                    child:
+                        Container() /*IconButton(
                     onPressed: () {},
                     icon: const Icon(
                       Icons.menu,
                       size: 50,
                     ),
-                  ),
-                ),
+                  ),*/
+                    ),
               ),
               SizedBox(
                 height: 100,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 50),
-                  child: IconButton(
+                    padding: const EdgeInsets.only(right: 50),
+                    child:
+                        Container() /*IconButton(
                     onPressed: () {},
                     icon: const Icon(
                       Icons.menu,
                       size: 50,
                     ),
-                  ),
-                ),
-              )
+                  ),*/
+                    ),
+              ),
             ],
           ),
-        ),
+        ),*/
       ),
     );
   }

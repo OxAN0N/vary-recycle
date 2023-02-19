@@ -82,8 +82,10 @@ flutter:
     - assets/plastic.png
     - assets/glass.png
     - assets/paper.png
-
-
+    - assets/—Pngtree—green background material for garbage_1194152.jpg
+    - assets/paper2.png
+    - assets/—Pngtree—garbage classification recycling_1039212.jpg
+  
   fonts:
     - family: Caveat
       fonts: 
