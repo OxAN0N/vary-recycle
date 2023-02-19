@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'display_picture_screen.dart';
 
 // A screen that allows users to take a picture using a given camera.
@@ -86,24 +86,108 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                // If the Future is complete, display the preview.
-                return GestureDetector(
-                    onTap: onCameraTap, child: CameraPreview(_controller));
-              } else {
-                // Otherwise, display a loading indicator.
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.black,
-                ));
-              }
-            },
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  FutureBuilder<void>(
+                    future: _initializeControllerFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        // If the Future is complete, display the preview.
+                        return GestureDetector(
+                            onTap: onCameraTap,
+                            child: CameraPreview(_controller));
+                      } else {
+                        // Otherwise, display a loading indicator.
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  Align(
+                    alignment: const Alignment(0, 0),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                      ),
+                      child: Container(
+                        width: 330,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 30,
+                                top: 15,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.recycleType.toUpperCase(),
+                                    style: GoogleFonts.varelaRound(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 10,
+                                    ),
+                                    child: Text(
+                                      "Remove lid and paper",
+                                      style: GoogleFonts.varelaRound(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color:
+                                      const Color.fromARGB(255, 77, 183, 245),
+                                ),
+                                child: const Icon(
+                                  size: 35,
+                                  Icons.recycling_outlined,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),

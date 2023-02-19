@@ -27,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _animationController;
   late GoogleSignInAuthentication googleAuth;
   CollectionReference product = FirebaseFirestore.instance.collection('user');
-  final int _currentIndex = 1;
 
   void _openCameraPage(String recycleType) async {
     final cameras = await availableCameras();

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:vary_recycle/screen/home_screen.dart';
+import 'package:vary_recycle/screen/login_screen.dart';
 import 'package:vary_recycle/screen/reward_screen.dart';
 import 'firebase_options.dart';
 
@@ -28,9 +29,9 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext _, AsyncSnapshot<User?> user) {
           if (user.hasData) {
-            return RewardScreen();
-          } else {
             return const HomeScreen();
+          } else {
+            return const LoginScreen();
           }
         },
       ),

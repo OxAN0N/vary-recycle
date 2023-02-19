@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vary_recycle/screen/home_screen.dart';
 
 class RewardScreen extends StatelessWidget {
-  final result = "123";
-  //const RewardScreen({super.key, this.result});
+  final result;
+  const RewardScreen({super.key, this.result});
 
   @override
   Widget build(BuildContext context) {
