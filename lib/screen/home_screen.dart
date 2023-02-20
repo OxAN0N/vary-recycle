@@ -1,12 +1,13 @@
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vary_recycle/screen/User_page.dart';
 import 'package:vary_recycle/screen/settings_page.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:vary_recycle/widgets/line_chart.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
@@ -378,8 +379,11 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
+                  flex: 4,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: LineChartSample2(),
+                  ),
                 )
               ],
             ),
