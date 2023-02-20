@@ -20,7 +20,7 @@ class RewardScreen extends StatefulWidget {
 class _RewardScreenState extends State<RewardScreen> {
   Future<String> getResult() async {
     String server = "121.169.44.47";
-    String restPort = "13285";
+    String restPort = "13286";
     var imageFile = File(widget.imagePath);
     List<int> imageBytes = imageFile.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);
@@ -35,7 +35,7 @@ class _RewardScreenState extends State<RewardScreen> {
               {'uid': myUid!, 'type': widget.recycleType, 'image': base64Image}
             ]),
           )
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 20));
       if (res.statusCode == 200) {
         return res.body;
       } else {
