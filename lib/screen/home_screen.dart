@@ -72,6 +72,21 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
+  Future<bool> TimeCheck() async {
+    final instance = FirebaseFirestore.instance;
+    final time = await instance.collection('user').doc('$myUid').get();
+    var list = time.data();
+    Timestamp RecordedTime = list?['currentReq'];
+    var recordTime = DateTime.fromMicrosecondsSinceEpoch(
+        RecordedTime.microsecondsSinceEpoch);
+    var diff = DateTime.now().difference(recordTime);
+    if (diff.inHours >= 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   void initState() {
     _animationController = AnimationController(
@@ -193,14 +208,6 @@ class _HomeScreenState extends State<HomeScreen>
                             textAlign: TextAlign.center,
                             '${snapshot.data}',
                             style: GoogleFonts.varelaRound(
-                              shadows: [
-                                const Shadow(
-                                    /*blurRadius: 30,
-                                  color: Colors.grey,
-                                  offset: Offset(5, 5),
-                                */
-                                    )
-                              ],
                               fontSize: 30,
                               fontWeight: FontWeight.w600,
                             ),
@@ -289,7 +296,31 @@ class _HomeScreenState extends State<HomeScreen>
                               children: [
                                 IconButton(
                                   iconSize: 80,
-                                  onPressed: () => _openCameraPage('paper'),
+                                  onPressed: () async {
+                                    if (await TimeCheck()) {
+                                      _openCameraPage('paper');
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: const Text("2시간 안지났엉"),
+                                            actions: [
+                                              Center(
+                                                child: TextButton(
+                                                  child: const Text("ok"),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
                                   icon: Image.asset(
                                     color: Colors.black,
                                     "assets/paper.png",
@@ -388,7 +419,15 @@ class _HomeScreenState extends State<HomeScreen>
               ],
             ),
           ),
-        ), /*
+        ),
+      ),
+    );
+  }
+}
+
+
+
+/*
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: SizedBox(
           height: 100,
@@ -441,7 +480,3 @@ class _HomeScreenState extends State<HomeScreen>
             ],
           ),
         ),*/
-      ),
-    );
-  }
-}
