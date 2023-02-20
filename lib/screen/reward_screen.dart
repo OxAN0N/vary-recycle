@@ -20,20 +20,30 @@ class RewardScreen extends StatefulWidget {
 class _RewardScreenState extends State<RewardScreen> {
   Future<String> getResult() async {
     String server = "121.169.44.47";
-    String restPort = "13286";
+    String restPort = "13285";
     var imageFile = File(widget.imagePath);
     List<int> imageBytes = imageFile.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);
-    final res = await http.post(
-      Uri.parse('${'http://$server'}:$restPort/test'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode([
-        {'uid': myUid!, 'type': widget.recycleType, 'image': base64Image}
-      ]),
-    );
-    return res.body;
+    try {
+      final res = await http
+          .post(
+            Uri.parse('${'http://$server'}:$restPort/test'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode([
+              {'uid': myUid!, 'type': widget.recycleType, 'image': base64Image}
+            ]),
+          )
+          .timeout(const Duration(seconds: 10));
+      if (res.statusCode == 200) {
+        return res.body;
+      } else {
+        return 'Error occured in server';
+      }
+    } catch (e) {
+      return 'Server not connected';
+    }
   }
 
   @override
@@ -60,9 +70,9 @@ class _RewardScreenState extends State<RewardScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      (snapshot.data! == 'success') ? 'Success' : 'Fail',
+                      snapshot.data!,
                       style: const TextStyle(
-                        fontSize: 32,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
