@@ -1,11 +1,8 @@
-import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:vary_recycle/screen/User_page.dart';
-import 'package:vary_recycle/screen/settings_page.dart';
-import 'package:vary_recycle/screen/take_picture_screen.dart';
+import 'package:rive/rive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vary_recycle/widgets/recycle_life.dart';
 import 'package:vary_recycle/widgets/recycle_item.dart';
