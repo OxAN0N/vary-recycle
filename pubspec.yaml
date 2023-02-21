@@ -50,6 +50,7 @@ dependencies:
   get: ^4.6.5
   google_fonts: ^4.0.3
   fl_chart: ^0.60.0
+  carousel_slider: ^4.2.1
   
 dev_dependencies:
   flutter_test:
@@ -86,6 +87,10 @@ flutter:
     - assets/—Pngtree—green background material for garbage_1194152.jpg
     - assets/paper2.png
     - assets/—Pngtree—garbage classification recycling_1039212.jpg
+    - assets/PET_guide/
+    - assets/CAN_guide/
+    - assets/PAPER_guide/
+    - assets/GLASS_guide/
   
   fonts:
     - family: Caveat
