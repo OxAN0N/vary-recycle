@@ -7,7 +7,8 @@ import 'package:vary_recycle/screen/User_page.dart';
 import 'package:vary_recycle/screen/settings_page.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:vary_recycle/widgets/line_chart.dart';
+import 'package:vary_recycle/widgets/recycle_life.dart';
+import 'package:vary_recycle/widgets/recycle_item.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
@@ -28,29 +29,6 @@ class _HomeScreenState extends State<HomeScreen>
   late GoogleSignInAuthentication googleAuth;
   CollectionReference product = FirebaseFirestore.instance.collection('user');
 
-  void _openCameraPage(String recycleType) async {
-    final cameras = await availableCameras();
-    final firstCamera = cameras.first;
-
-    if (!mounted) return;
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TakePictureScreen(
-                  camera: firstCamera,
-                  recycleType: recycleType,
-                )));
-  }
-
-  void _openBarcodeScanner() {
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: ((context) => const QrBarcodeScanner(
-    //               title: "QR/Barcode",
-    //             ))));
-  }
-
   Future<dynamic> ReturnValue(String info) async {
     final usercol = FirebaseFirestore.instance;
     final result = await usercol.collection('user').doc('$myUid').get();
@@ -69,21 +47,6 @@ class _HomeScreenState extends State<HomeScreen>
         'name': userName,
         'credit': credit,
       });
-    }
-  }
-
-  Future<bool> TimeCheck() async {
-    final instance = FirebaseFirestore.instance;
-    final time = await instance.collection('user').doc('$myUid').get();
-    var list = time.data();
-    Timestamp RecordedTime = list?['currentReq'];
-    var recordTime = DateTime.fromMicrosecondsSinceEpoch(
-        RecordedTime.microsecondsSinceEpoch);
-    var diff = DateTime.now().difference(recordTime);
-    if (diff.inHours >= 2) {
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -193,6 +156,9 @@ class _HomeScreenState extends State<HomeScreen>
             padding: const EdgeInsets.only(top: 50),
             child: Column(
               children: [
+                const Expanded(
+                  child: RecycleLife(),
+                ),
                 Expanded(
                   flex: 1,
                   child: FutureBuilder(
@@ -289,133 +255,36 @@ class _HomeScreenState extends State<HomeScreen>
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(17),
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  iconSize: 80,
-                                  onPressed: () async {
-                                    if (await TimeCheck()) {
-                                      _openCameraPage('paper');
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: const Text("2시간 안지났엉"),
-                                            actions: [
-                                              Center(
-                                                child: TextButton(
-                                                  child: const Text("ok"),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                  icon: Image.asset(
-                                    color: Colors.black,
-                                    "assets/paper.png",
-                                  ),
-                                ),
-                                Text(
-                                  'paper',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        children: const [
+                          Recycle_item(
+                            name: 'paper',
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(17),
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  iconSize: 80,
-                                  onPressed: () => _openCameraPage('can'),
-                                  icon: Image.asset(
-                                    "assets/can.png",
-                                  ),
-                                ),
-                                Text(
-                                  'can',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                )
-                              ],
-                            ),
+                          Recycle_item(
+                            name: 'can',
                           ),
                         ],
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(17),
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  iconSize: 80,
-                                  onPressed: () => _openCameraPage('glass'),
-                                  icon: Image.asset(
-                                    "assets/glass.png",
-                                  ),
-                                ),
-                                Text(
-                                  'glass',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        children: const [
+                          Recycle_item(
+                            name: 'glass',
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(17),
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  iconSize: 80,
-                                  onPressed: () => _openCameraPage('pet'),
-                                  icon: Image.asset(
-                                    "assets/pet.png",
-                                  ),
-                                ),
-                                Text(
-                                  'pet',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          Recycle_item(
+                            name: 'pet',
                           ),
                         ],
                       ),
                     ],
                   ),
-                ),
+                ), /*
                 const Expanded(
                   flex: 4,
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: LineChartSample2(),
                   ),
-                )
+                )*/
               ],
             ),
           ),
@@ -424,8 +293,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 }
-
-
 
 /*
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
