@@ -51,6 +51,14 @@ class _Recycle_itemState extends State<Recycle_item> {
     return diff;
   }
 
+  Future<int> lifeCheck() async {
+    final instance = FirebaseFirestore.instance;
+    final life = await instance.collection('user').doc('$myUid').get();
+    var list = life.data();
+    int restLife = list?['countPerDay'];
+    return restLife;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -61,7 +69,41 @@ class _Recycle_itemState extends State<Recycle_item> {
             iconSize: 80,
             onPressed: () async {
               var diff = await TimeCheck();
-              if (diff.inHours >= 2) {
+              var chance = await lifeCheck();
+              print(chance);
+              if (chance >= 5) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: const Text(
+                        "Your remain chance is over today!",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      actions: [
+                        Center(
+                          child: TextButton(
+                            child: const Text(
+                              "OK",
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else if (diff.inHours >= 2) {
                 _openCameraPage(widget.name);
               } else {
                 int hour = 120;
