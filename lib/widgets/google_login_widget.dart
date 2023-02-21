@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleLogin extends StatelessWidget {
@@ -27,16 +25,19 @@ class GoogleLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SignInButton(
-          Buttons.Google,
-          onPressed: () {
-            signInWithGoogle();
-          },
-          text: "Sign up with Google",
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () {
+              signInWithGoogle();
+            },
+            label: const Text(" Sign in with Google"),
+            icon: const Image(
+                image: AssetImage('assets/google.png'), width: 20.0),
+          ),
         ),
       ],
     );

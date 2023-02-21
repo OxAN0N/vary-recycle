@@ -88,6 +88,7 @@ flutter:
     - assets/RiveAssets/4390-9001-gdsc-logo-animation.riv
     - assets/RiveAssets/4365-8969-forgot-password-flow.riv
     - assets/RiveAssets/natural.div
+    - assets/google.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

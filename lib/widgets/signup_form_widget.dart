@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vary_recycle/screen/otp_screen.dart';
 import 'package:vary_recycle/src/controllers/signup_controller.dart';
+
+import 'google_login_widget.dart';
 
 class SignupFormWidget extends StatelessWidget {
   const SignupFormWidget({
@@ -17,7 +20,7 @@ class SignupFormWidget extends StatelessWidget {
       child: Form(
           key: formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextFormField(
                 controller: controller.fullName,
@@ -56,6 +59,24 @@ class SignupFormWidget extends StatelessWidget {
                 height: 10,
               ),
               TextFormField(
+                controller: controller.phoneNo,
+                decoration: const InputDecoration(
+                  label: Text("Phone No."),
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(
+                    Icons.phone_android_rounded,
+                    color: Colors.green,
+                  ),
+                  labelStyle: TextStyle(color: Colors.green),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 2.0, color: Colors.green),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
                 controller: controller.password,
                 decoration: const InputDecoration(
                   label: Text("Password"),
@@ -80,14 +101,34 @@ class SignupFormWidget extends StatelessWidget {
                       ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      SignUpController.instance.registerUser(
-                          controller.email.text.trim(),
-                          controller.password.text.trim());
+                      // final user = UserModel(
+                      //   email: controller.email.text.trim(),
+                      //   password: controller.password.text.trim(),
+                      //   fullName: controller.fullName.text.trim(),
+                      // );
+                      SignUpController.instance
+                          .phoneAuthentication(controller.phoneNo.text.trim());
+                      // SignUpController.instance.registerUser(
+                      //     controller.email.text.trim(),
+                      //     controller.password.text.trim());
+                      Get.to(() => const OTPscreen());
                     }
                   },
                   child: Text("Signup".toUpperCase()),
                 ),
-              )
+              ),
+              Column(
+                children: const [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text("OR"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+              const GoogleLogin(),
             ],
           )),
     );

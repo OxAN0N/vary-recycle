@@ -10,22 +10,32 @@ class ForgetPasswordScreen {
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       builder: (context) => Container(
-        height: 250,
+        //height: 250,
         padding: const EdgeInsets.all(30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Email Authentication",
-                style: Theme.of(context).textTheme.headline4),
+            Text("Make Selection!",
+                style: Theme.of(context).textTheme.headlineLarge),
             Text(
               "Choose option given below to reset your password.",
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 30.0),
             ForgetPasswordBtnWidget(
               btnIcon: Icons.mail_outline_outlined,
               title: "E-mail",
               subTitle: "Reset via Mail Verification",
+              onTap: () {
+                Navigator.pop(context);
+                Get.to(() => const ForgetPassswordMailScreen());
+              },
+            ),
+            const SizedBox(height: 15.0),
+            ForgetPasswordBtnWidget(
+              btnIcon: Icons.mobile_friendly,
+              title: "Phone No",
+              subTitle: "Reset via Phone Verification",
               onTap: () {
                 Navigator.pop(context);
                 Get.to(() => const ForgetPassswordMailScreen());

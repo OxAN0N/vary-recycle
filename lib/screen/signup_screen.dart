@@ -28,14 +28,14 @@ class SignupScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   ("Get on Recyling!"),
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Text(("Create your profile to start your Journey."),
-                    style: Theme.of(context).textTheme.bodyText1),
+                    style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(
                   height: 15,
                 ),
-                const SignupFormWidget()
+                const SignupFormWidget(),
               ],
             ),
           ),
