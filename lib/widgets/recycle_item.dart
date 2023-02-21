@@ -48,8 +48,6 @@ class _Recycle_itemState extends State<Recycle_item> {
     var recordTime = DateTime.fromMicrosecondsSinceEpoch(
         RecordedTime.microsecondsSinceEpoch);
     var diff = DateTime.now().difference(recordTime);
-
-    print(diff.runtimeType);
     return diff;
   }
 

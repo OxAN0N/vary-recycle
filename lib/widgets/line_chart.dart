@@ -282,3 +282,11 @@ class _LineChartSample2State extends State<LineChartSample2> {
     );
   }
 }
+/*
+                const Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: LineChartSample2(),
+                  ),
+                )*/

@@ -9,6 +9,7 @@ import 'package:vary_recycle/screen/take_picture_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vary_recycle/widgets/recycle_life.dart';
 import 'package:vary_recycle/widgets/recycle_item.dart';
+import 'package:vary_recycle/widgets/drawer.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
@@ -87,63 +88,7 @@ class _HomeScreenState extends State<HomeScreen>
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        endDrawer: Drawer(
-          elevation: 16.0,
-          child: Column(children: <Widget>[
-            UserAccountsDrawerHeader(
-              onDetailsPressed: () {},
-              decoration: const BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  )),
-              accountName: Text(userName),
-              accountEmail:
-                  Text(FirebaseAuth.instance.currentUser?.email ?? "NaN"),
-              currentAccountPicture: CircleAvatar(
-                radius: 10.0,
-                backgroundColor: Colors.transparent,
-                child: ClipOval(
-                  child: Image.network(
-                    FirebaseAuth.instance.currentUser?.photoURL ?? "NaN",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              otherAccountsPictures: const <Widget>[
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Text("abc"),
-                ),
-              ],
-            ),
-            ListTile(
-              title: const Text("Setting"),
-              leading: const Icon(Icons.settings),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SettingPage()));
-              },
-            ),
-            ListTile(
-              title: const Text("Profile"),
-              leading: const Icon(Icons.person),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const UserPage()));
-              },
-            ),
-            const Expanded(child: ListTile()),
-            ListTile(
-              title: const Text("Logout"),
-              leading: const Icon(Icons.logout),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-              },
-            )
-          ]),
-        ),
+        endDrawer: const drawer(),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -277,14 +222,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ],
                   ),
-                ), /*
-                const Expanded(
-                  flex: 4,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: LineChartSample2(),
-                  ),
-                )*/
+                ),
               ],
             ),
           ),
@@ -293,57 +231,3 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 }
-
-/*
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
-          height: 100,
-          width: 100,
-          child: FloatingActionButton(
-            backgroundColor: const Color.fromARGB(255, 232, 231, 231),
-            onPressed: _openBarcodeScanner,
-            child: const Icon(
-              Icons.qr_code_2_rounded,
-              size: 70,
-              color: Colors.black,
-            ),
-          ),
-        ), 
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 4,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              SizedBox(
-                height: 100,
-                child: Padding(
-                    padding: const EdgeInsets.only(left: 50),
-                    child:
-                        Container() /*IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.menu,
-                      size: 50,
-                    ),
-                  ),*/
-                    ),
-              ),
-              SizedBox(
-                height: 100,
-                child: Padding(
-                    padding: const EdgeInsets.only(right: 50),
-                    child:
-                        Container() /*IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.menu,
-                      size: 50,
-                    ),
-                  ),*/
-                    ),
-              ),
-            ],
-          ),
-        ),*/
