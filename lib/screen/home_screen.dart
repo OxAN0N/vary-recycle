@@ -7,7 +7,9 @@ import 'package:vary_recycle/screen/User_page.dart';
 import 'package:vary_recycle/screen/settings_page.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:vary_recycle/widgets/line_chart.dart';
+import 'package:vary_recycle/widgets/recycle_life.dart';
+import 'package:vary_recycle/widgets/recycle_item.dart';
+import 'package:vary_recycle/widgets/drawer.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User? user = auth.currentUser;
@@ -27,29 +29,6 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _animationController;
   late GoogleSignInAuthentication googleAuth;
   CollectionReference product = FirebaseFirestore.instance.collection('user');
-
-  void _openCameraPage(String recycleType) async {
-    final cameras = await availableCameras();
-    final firstCamera = cameras.first;
-
-    if (!mounted) return;
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TakePictureScreen(
-                  camera: firstCamera,
-                  recycleType: recycleType,
-                )));
-  }
-
-  void _openBarcodeScanner() {
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: ((context) => const QrBarcodeScanner(
-    //               title: "QR/Barcode",
-    //             ))));
-  }
 
   Future<dynamic> ReturnValue(String info) async {
     final usercol = FirebaseFirestore.instance;
@@ -109,63 +88,7 @@ class _HomeScreenState extends State<HomeScreen>
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        endDrawer: Drawer(
-          elevation: 16.0,
-          child: Column(children: <Widget>[
-            UserAccountsDrawerHeader(
-              onDetailsPressed: () {},
-              decoration: const BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  )),
-              accountName: Text(userName),
-              accountEmail:
-                  Text(FirebaseAuth.instance.currentUser?.email ?? "NaN"),
-              currentAccountPicture: CircleAvatar(
-                radius: 10.0,
-                backgroundColor: Colors.transparent,
-                child: ClipOval(
-                  child: Image.network(
-                    FirebaseAuth.instance.currentUser?.photoURL ?? "NaN",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              otherAccountsPictures: const <Widget>[
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Text("abc"),
-                ),
-              ],
-            ),
-            ListTile(
-              title: const Text("Setting"),
-              leading: const Icon(Icons.settings),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SettingPage()));
-              },
-            ),
-            ListTile(
-              title: const Text("Profile"),
-              leading: const Icon(Icons.person),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const UserPage()));
-              },
-            ),
-            const Expanded(child: ListTile()),
-            ListTile(
-              title: const Text("Logout"),
-              leading: const Icon(Icons.logout),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-              },
-            )
-          ]),
-        ),
+        endDrawer: const drawer(),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -178,6 +101,9 @@ class _HomeScreenState extends State<HomeScreen>
             padding: const EdgeInsets.only(top: 50),
             child: Column(
               children: [
+                const Expanded(
+                  child: RecycleLife(),
+                ),
                 Expanded(
                   flex: 1,
                   child: FutureBuilder(
@@ -193,14 +119,6 @@ class _HomeScreenState extends State<HomeScreen>
                             textAlign: TextAlign.center,
                             '${snapshot.data}',
                             style: GoogleFonts.varelaRound(
-                              shadows: [
-                                const Shadow(
-                                    /*blurRadius: 30,
-                                  color: Colors.grey,
-                                  offset: Offset(5, 5),
-                                */
-                                    )
-                              ],
                               fontSize: 30,
                               fontWeight: FontWeight.w600,
                             ),
@@ -282,165 +200,33 @@ class _HomeScreenState extends State<HomeScreen>
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(17),
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  iconSize: 80,
-                                  onPressed: () => _openCameraPage('paper'),
-                                  icon: Image.asset(
-                                    color: Colors.black,
-                                    "assets/paper.png",
-                                  ),
-                                ),
-                                Text(
-                                  'paper',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        children: const [
+                          Recycle_item(
+                            name: 'paper',
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(17),
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  iconSize: 80,
-                                  onPressed: () => _openCameraPage('can'),
-                                  icon: Image.asset(
-                                    "assets/can.png",
-                                  ),
-                                ),
-                                Text(
-                                  'can',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                )
-                              ],
-                            ),
+                          Recycle_item(
+                            name: 'can',
                           ),
                         ],
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(17),
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  iconSize: 80,
-                                  onPressed: () => _openCameraPage('glass'),
-                                  icon: Image.asset(
-                                    "assets/glass.png",
-                                  ),
-                                ),
-                                Text(
-                                  'glass',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        children: const [
+                          Recycle_item(
+                            name: 'glass',
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(17),
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  iconSize: 80,
-                                  onPressed: () => _openCameraPage('pet'),
-                                  icon: Image.asset(
-                                    "assets/pet.png",
-                                  ),
-                                ),
-                                Text(
-                                  'pet',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          Recycle_item(
+                            name: 'pet',
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                const Expanded(
-                  flex: 4,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: LineChartSample2(),
-                  ),
-                )
               ],
             ),
           ),
-        ), /*
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
-          height: 100,
-          width: 100,
-          child: FloatingActionButton(
-            backgroundColor: const Color.fromARGB(255, 232, 231, 231),
-            onPressed: _openBarcodeScanner,
-            child: const Icon(
-              Icons.qr_code_2_rounded,
-              size: 70,
-              color: Colors.black,
-            ),
-          ),
-        ), 
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 4,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              SizedBox(
-                height: 100,
-                child: Padding(
-                    padding: const EdgeInsets.only(left: 50),
-                    child:
-                        Container() /*IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.menu,
-                      size: 50,
-                    ),
-                  ),*/
-                    ),
-              ),
-              SizedBox(
-                height: 100,
-                child: Padding(
-                    padding: const EdgeInsets.only(right: 50),
-                    child:
-                        Container() /*IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.menu,
-                      size: 50,
-                    ),
-                  ),*/
-                    ),
-              ),
-            ],
-          ),
-        ),*/
+        ),
       ),
     );
   }
