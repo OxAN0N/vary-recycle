@@ -51,7 +51,8 @@ dependencies:
   fl_chart: ^0.60.0
   rive: ^0.10.1
   flutter_otp_text_field: ^1.1.1
-
+  carousel_slider: ^4.2.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -91,7 +92,11 @@ flutter:
     - assets/RiveAssets/4390-9001-gdsc-logo-animation.riv
     - assets/RiveAssets/4365-8969-forgot-password-flow.riv
     - assets/RiveAssets/natural.div
-
+    - assets/PET_guide/
+    - assets/CAN_guide/
+    - assets/PAPER_guide/
+    - assets/GLASS_guide/
+    
   fonts:
     - family: Caveat
       fonts: 
