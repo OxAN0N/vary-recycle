@@ -52,6 +52,8 @@ dependencies:
   rive: ^0.10.1
   flutter_otp_text_field: ^1.1.1
   carousel_slider: ^4.2.1
+  flutter_secure_storage: ^8.0.0
+  shared_preferences: ^2.0.17
   
 dev_dependencies:
   flutter_test:

@@ -1,15 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:get/get_navigation/get_navigation.dart';
-
 import 'package:get/get.dart';
-
 import 'package:vary_recycle/screen/home_screen.dart';
 import 'package:vary_recycle/screen/login_screen.dart';
-
 import 'firebase_options.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'package:camera/camera.dart';
 // import 'package:path_provider/path_provider.dart';
@@ -20,6 +18,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final prefs = await SharedPreferences.getInstance();
+
+  if (prefs.getBool('first_run') ?? true) {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+
+    await storage.deleteAll();
+
+    prefs.setBool('first_run', false);
+  }
   runApp(const MyApp());
 }
 
