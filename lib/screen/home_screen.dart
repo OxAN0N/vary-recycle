@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:rive/rive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vary_recycle/widgets/recycle_life.dart';
 import 'package:vary_recycle/widgets/recycle_item.dart';
@@ -95,14 +94,13 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.only(
+              top: 70,
+            ),
             child: Column(
               children: [
-                const Expanded(
-                  child: RecycleLife(),
-                ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: FutureBuilder(
                     future: ReturnValue('name'),
                     builder: (context, snapshot) {
@@ -111,13 +109,38 @@ class _HomeScreenState extends State<HomeScreen>
                       } else if (snapshot.hasError) {
                         return const Text("error");
                       } else {
-                        return Center(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            '${snapshot.data}',
-                            style: GoogleFonts.varelaRound(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600,
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Weclome!',
+                                  style: GoogleFonts.varelaRound(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  '${snapshot.data}',
+                                  style: GoogleFonts.varelaRound(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  "\"Reduce, Reuse, Recycle!\"",
+                                  style: GoogleFonts.varelaRound(
+                                    color: Colors.grey,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         );
@@ -126,53 +149,73 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 Expanded(
-                  flex: 1,
-                  child: FutureBuilder(
-                    future: ReturnValue('credit'),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData == false) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return const Text("error");
-                      } else {
-                        return Center(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            '+ ${snapshot.data}%',
-                            style: GoogleFonts.varelaRound(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: const Color.fromARGB(255, 107, 255, 112),
+                  flex: 2,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Expanded(
+                              child: RecycleLife(),
                             ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: FutureBuilder(
-                    future: ReturnValue('credit'),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData == false) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return const Text("error");
-                      } else {
-                        return Center(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            '\$${snapshot.data}',
-                            style: GoogleFonts.varelaRound(
-                              fontSize: 40,
-                              fontWeight: FontWeight.w600,
+                            FutureBuilder(
+                              future: ReturnValue('credit'),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData == false) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return const Text("error");
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 50,
+                                    ),
+                                    child: Text(
+                                      textAlign: TextAlign.center,
+                                      '+ ${snapshot.data}%',
+                                      style: GoogleFonts.varelaRound(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color.fromARGB(
+                                            255, 107, 255, 112),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
                             ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                          ],
+                        ),
+                        FutureBuilder(
+                          future: ReturnValue('credit'),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData == false) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return const Text("error");
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 10,
+                                  right: 40,
+                                ),
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    '\$${snapshot.data}',
+                                    style: GoogleFonts.varelaRound(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ]),
                 ),
                 Expanded(
                   flex: 1,
@@ -180,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen>
                     child: Center(
                       child: Text(
                         textAlign: TextAlign.center,
-                        "your credit",
+                        "Click what you recylce",
                         style: GoogleFonts.varelaRound(
                           color: Colors.grey,
                           fontSize: 20,
@@ -191,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 Expanded(
-                  flex: 8,
+                  flex: 7,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -220,6 +263,10 @@ class _HomeScreenState extends State<HomeScreen>
                     ],
                   ),
                 ),
+                const Expanded(
+                  flex: 1,
+                  child: SizedBox(),
+                )
               ],
             ),
           ),

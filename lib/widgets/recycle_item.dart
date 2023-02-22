@@ -150,7 +150,7 @@ class _Recycle_itemState extends State<Recycle_item> {
             ),
           ),
           Text(
-            widget.name,
+            widget.name.toUpperCase(),
             style: GoogleFonts.varelaRound(
               fontSize: 20,
               fontWeight: FontWeight.w600,
