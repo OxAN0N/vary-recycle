@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
