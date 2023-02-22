@@ -54,6 +54,7 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter_secure_storage: ^8.0.0
   shared_preferences: ^2.0.17
+  rive_splash_screen: ^0.1.1
   
 dev_dependencies:
   flutter_test:
@@ -85,6 +86,8 @@ flutter:
   assets:
     - assets/RiveAssets/
     - assets/logo.png
+    - assets/RiveAssets/fristers_logo_animation.riv
+    - assets/RiveAssets/vary_recycle_f.riv
     - assets/PET_guide/
     - assets/CAN_guide/
     - assets/PAPER_guide/
