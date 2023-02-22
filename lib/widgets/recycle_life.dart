@@ -34,7 +34,7 @@ class _RecycleLifeState extends State<RecycleLife> {
               for (int i = 0; i < snapshot.data!; i++)
                 const Icon(
                   Icons.energy_savings_leaf,
-                  color: Color.fromARGB(255, 107, 255, 112),
+                  color: Color.fromARGB(255, 3, 206, 117),
                   size: 35,
                 ),
               for (int i = snapshot.data!; i < 5; i++)

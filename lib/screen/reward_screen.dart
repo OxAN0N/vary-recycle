@@ -20,7 +20,7 @@ class RewardScreen extends StatefulWidget {
 class _RewardScreenState extends State<RewardScreen> {
   Future<String> getResult() async {
     String server = "121.169.44.47";
-    String restPort = "13286";
+    String restPort = "13285";
     var imageFile = File(widget.imagePath);
     List<int> imageBytes = imageFile.readAsBytesSync();
     String base64Image = base64Encode(imageBytes);

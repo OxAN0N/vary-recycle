@@ -145,8 +145,7 @@ class _Recycle_itemState extends State<Recycle_item> {
               }
             },
             icon: Image.asset(
-              color: Colors.black,
-              "assets/${widget.name}.png",
+              "assets/HOME_page/${widget.name}.png",
             ),
           ),
           Text(

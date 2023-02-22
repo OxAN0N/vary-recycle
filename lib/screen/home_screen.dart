@@ -7,9 +7,9 @@ import 'package:vary_recycle/widgets/recycle_life.dart';
 import 'package:vary_recycle/widgets/recycle_item.dart';
 import 'package:vary_recycle/widgets/drawer.dart';
 
-final FirebaseAuth auth = FirebaseAuth.instance;
-final User? user = auth.currentUser;
-final myUid = user?.uid;
+FirebaseAuth auth = FirebaseAuth.instance;
+User? user = auth.currentUser;
+var myUid = user?.uid;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen>
       await FirebaseFirestore.instance.collection('user').doc('$myUid').set({
         'name': userName,
         'credit': credit,
+        'currentReq': DateTime.now().millisecond - 10000,
+        'countPerDay': 0
       });
     }
   }
@@ -77,9 +79,14 @@ class _HomeScreenState extends State<HomeScreen>
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          title: SizedBox(
+              height: kToolbarHeight, child: Image.asset('assets/logo.png')),
+          centerTitle: false,
+          // centerTitle: false,
+
           iconTheme: const IconThemeData(
             size: 30,
-            color: Color.fromARGB(255, 107, 255, 112),
+            color: Color.fromARGB(255, 3, 206, 117),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -89,13 +96,12 @@ class _HomeScreenState extends State<HomeScreen>
           decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage(
-                  'assets/—Pngtree—green background material for garbage_1194152.jpg'),
+              image: AssetImage('assets/HOME_page/background.jpg'),
             ),
           ),
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 70,
+              top: 80,
             ),
             child: Column(
               children: [
@@ -112,19 +118,10 @@ class _HomeScreenState extends State<HomeScreen>
                         return Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20,
-                            ),
+                            padding: const EdgeInsets.fromLTRB(20, 40, 0, 5),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Weclome!',
-                                  style: GoogleFonts.varelaRound(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
                                 Text(
                                   '${snapshot.data}',
                                   style: GoogleFonts.varelaRound(
@@ -156,8 +153,11 @@ class _HomeScreenState extends State<HomeScreen>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            const Expanded(
-                              child: RecycleLife(),
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Expanded(
+                                child: RecycleLife(),
+                              ),
                             ),
                             FutureBuilder(
                               future: ReturnValue('credit'),
@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
                                         color: const Color.fromARGB(
-                                            255, 107, 255, 112),
+                                            255, 3, 206, 117),
                                       ),
                                     ),
                                   );

@@ -80,23 +80,13 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/can.png
-    - assets/pet.png
-    - assets/plastic.png
-    - assets/glass.png
-    - assets/paper.png
-    - assets/—Pngtree—green background material for garbage_1194152.jpg
-    - assets/paper2.png
-    - assets/—Pngtree—garbage classification recycling_1039212.jpg
-    - assets/RiveAssets/2131-4192-coin.riv
-    - assets/RiveAssets/4390-9001-gdsc-logo-animation.riv
-    - assets/RiveAssets/4365-8969-forgot-password-flow.riv
-    - assets/RiveAssets/natural.div
+    - assets/RiveAssets/
+    - assets/logo.png
     - assets/PET_guide/
     - assets/CAN_guide/
     - assets/PAPER_guide/
     - assets/GLASS_guide/
-    
+    - assets/HOME_page/
   fonts:
     - family: Caveat
       fonts: 
