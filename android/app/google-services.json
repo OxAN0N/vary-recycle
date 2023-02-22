@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "253131687143",
+    "firebase_url": "https://fir-recycle-769a8-default-rtdb.firebaseio.com",
     "project_id": "fir-recycle-769a8",
     "storage_bucket": "fir-recycle-769a8.appspot.com"
   },
@@ -19,6 +20,22 @@
           "android_info": {
             "package_name": "com.example.vary_recycle",
             "certificate_hash": "081be19b92ce32d1811e36ee9e82fac13692329b"
+          }
+        },
+        {
+          "client_id": "253131687143-bj9qd11g353044v3uamnkpmv0asqm8v1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vary_recycle",
+            "certificate_hash": "07b79a145390354660894cc987dbe1836f3093b2"
+          }
+        },
+        {
+          "client_id": "253131687143-upir9b6d109a2rvs9dc72q7sren80b6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vary_recycle",
+            "certificate_hash": "40a77f63697c0306c71a2a14d20595692d19d8ad"
           }
         },
         {

@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import 'package:vary_recycle/screen/home_screen.dart';
+import 'package:vary_recycle/repository/authentication_repository/authentication_repository.dart';
 import 'package:vary_recycle/screen/login_screen.dart';
+import 'package:vary_recycle/src/controllers/otp_controller.dart';
 import 'firebase_options.dart';
 
 // import 'package:camera/camera.dart';
@@ -12,9 +12,12 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Get.put(OTPController());
   await Firebase.initializeApp(
+    name: "vary-recycle",
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  ).then((value) => Get.put(AuthenticationRepository()));
+
   runApp(const MyApp());
 }
 
@@ -23,19 +26,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       defaultTransition: Transition.leftToRightWithFade,
-      transitionDuration: const Duration(milliseconds: 500),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext _, AsyncSnapshot<User?> user) {
-          if (user.hasData) {
-            return const HomeScreen();
-          } else {
-            return const LoginScreen();
-          }
-        },
-      ),
+      transitionDuration: Duration(milliseconds: 500),
+      home: LoginScreen(),
+      //   StreamBuilder(
+      // stream: FirebaseAuth.instance.authStateChanges(),
+      // builder: (BuildContext _, AsyncSnapshot<User?> user) {
+      //   if (user.hasData) {
+      //     return const HomeScreen();
+      //   } else {
+      //     return const LoginScreen();
+      //   }
+      // },
     );
   }
 }
