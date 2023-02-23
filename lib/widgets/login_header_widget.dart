@@ -23,10 +23,10 @@ class LoginHeaderWidget extends StatelessWidget {
         const SizedBox(height: 20),
         Text(
           ("Welcome,"),
-          style: Theme.of(context).textTheme.headline3,
+          style: Theme.of(context).textTheme.headlineLarge,
         ),
         Text(("Let's clean Recycle!"),
-            style: Theme.of(context).textTheme.bodyText1),
+            style: Theme.of(context).textTheme.bodyMedium),
         // const SizedBox(
         //   height: 20,
         // ),

@@ -17,15 +17,24 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,41 +52,12 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAw2YC16nF-VS2_8c-JaDs6rERktdO09pg',
-    appId: '1:253131687143:web:83f192f115a080459b8e42',
-    messagingSenderId: '253131687143',
-    projectId: 'fir-recycle-769a8',
-    authDomain: 'fir-recycle-769a8.firebaseapp.com',
-    storageBucket: 'fir-recycle-769a8.appspot.com',
-    measurementId: 'G-K9T9HTF8KQ',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBoq36Yo7m2S_AwthWNrJRXO1Gc0V5TX80',
     appId: '1:253131687143:android:f955c9525a866eae9b8e42',
     messagingSenderId: '253131687143',
     projectId: 'fir-recycle-769a8',
+    databaseURL: 'https://fir-recycle-769a8-default-rtdb.firebaseio.com',
     storageBucket: 'fir-recycle-769a8.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBGGnzgNgwtR25RIcJu4MedLTvLns8iT3o',
-    appId: '1:253131687143:ios:fcafbafd32a2c2459b8e42',
-    messagingSenderId: '253131687143',
-    projectId: 'fir-recycle-769a8',
-    storageBucket: 'fir-recycle-769a8.appspot.com',
-    iosClientId: '253131687143-5ssees0dd26nv6e9jkg99hcat8bmjvme.apps.googleusercontent.com',
-    iosBundleId: 'com.example.varyRecycle',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBGGnzgNgwtR25RIcJu4MedLTvLns8iT3o',
-    appId: '1:253131687143:ios:fcafbafd32a2c2459b8e42',
-    messagingSenderId: '253131687143',
-    projectId: 'fir-recycle-769a8',
-    storageBucket: 'fir-recycle-769a8.appspot.com',
-    iosClientId: '253131687143-5ssees0dd26nv6e9jkg99hcat8bmjvme.apps.googleusercontent.com',
-    iosBundleId: 'com.example.varyRecycle',
   );
 }

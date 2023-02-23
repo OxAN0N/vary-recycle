@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vary_recycle/screen/signup_screen.dart';
-
-import 'google_login_widget.dart';
+import 'package:vary_recycle/widgets/google_login_widget.dart';
 
 class LoginFooterWidget extends StatelessWidget {
   const LoginFooterWidget({

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -6,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 import 'package:vary_recycle/screen/home_screen.dart';
-
 import 'package:vary_recycle/screen/login_screen.dart';
+import 'package:vary_recycle/src/controllers/otp_controller.dart';
 import 'firebase_options.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +17,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Get.put(OTPController());
   await Firebase.initializeApp(
+    name: "vary-recycle",
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final prefs = await SharedPreferences.getInstance();
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       defaultTransition: Transition.leftToRightWithFade,
       transitionDuration: const Duration(milliseconds: 500),
       home: SplashScreen.navigate(
@@ -62,6 +63,9 @@ class MyApp extends StatelessWidget {
         startAnimation: 'WAVE ANIMATION',
         backgroundColor: Colors.white,
       ),
+      transitionDuration: Duration(milliseconds: 500),
+      home: LoginScreen(),
+
     );
   }
 }
