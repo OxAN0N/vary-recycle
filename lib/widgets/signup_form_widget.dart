@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vary_recycle/screen/otp_screen.dart';
 import 'package:vary_recycle/src/controllers/signup_controller.dart';
+import 'package:vary_recycle/widgets/google_login_widget.dart';
 
 import 'google_login_widget.dart';
 
@@ -36,6 +37,8 @@ class SignupFormWidget extends StatelessWidget {
                     borderSide: BorderSide(width: 2.0, color: Colors.green),
                   ),
                 ),
+                icon: const Image(
+                    image: AssetImage('assets/google.png'), width: 20.0),
               ),
               const SizedBox(
                 height: 10,

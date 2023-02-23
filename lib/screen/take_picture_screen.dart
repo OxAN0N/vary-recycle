@@ -1,9 +1,9 @@
 import 'dart:async';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-
+import 'package:vary_recycle/widgets/guide_widget.dart';
 import 'display_picture_screen.dart';
+import 'dart:async' show Future;
 
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
@@ -31,7 +31,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       // Define the resolution to use.
       ResolutionPreset.veryHigh,
     );
-
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize();
   }
@@ -81,116 +80,68 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         title:
             Text(widget.recycleType.toUpperCase()), // 홈 화면에서 누른 위젯에 따라 변경 필요!
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         elevation: 0.0,
       ),
       extendBodyBehindAppBar: true,
-      // You must wait until the controller is initialized before displaying the
-      // camera preview. Use a FutureBuilder to display a loading spinner until the
-      // controller has finished initializing.
-      body: Column(
+      backgroundColor: Colors.black,
+      body: Stack(
         children: [
-          FutureBuilder<void>(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                // If the Future is complete, display the preview.
-                return CameraPreview(_controller);
-              } else {
-                // Otherwise, display a loading indicator.
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.black,
-                ));
-              }
-            },
-          ),
-          Expanded(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                final width = constraints.maxWidth;
-                final height = constraints.maxHeight;
-                final ratio = width / height;
-
-                return Column(
-                  children: [
-                    // SizedBox(
-                    //   height: 5 * ratio,
-                    // ),
-                    Text(
-                      '분리수거 할 물건을 촬영해주세요.',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 7 * ratio,
-                        fontWeight: FontWeight.bold,
-                      ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(children: [
+                FutureBuilder<void>(
+                  future: _initializeControllerFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      // If the Future is complete, display the preview.
+                      return GestureDetector(
+                          onTap: onCameraTap,
+                          child: CameraPreview(_controller));
+                    } else {
+                      // Otherwise, display a loading indicator.
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                        ),
+                      );
+                    }
+                  },
+                ),
+                Align(
+                  alignment: const Alignment(0, 0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 40,
                     ),
-                    // SizedBox(
-                    //   height: 5 * ratio,
-                    // ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 20 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.subdirectory_arrow_left_rounded,
-                                size: 7 * ratio,
-                              ),
-                              color: Colors.white,
-                            ),
-                          ],
+                    child: Container(
+                        width: 330,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
                         ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 30 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: onCameraTap,
-                              icon: const Icon(Icons.camera_alt_outlined),
-                              iconSize: 15 * ratio,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 20 * ratio,
-                              color: Colors.green.shade600,
-                            ),
-                            IconButton(
-                              onPressed: () {}, // 갤러리 할까말까 고민 중
-                              icon: const Icon(Icons.photo_library_rounded),
-                              iconSize: 7 * ratio,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                );
-              },
-            ),
-          )
+                        child: GuideSlider(recycleType: widget.recycleType)),
+                  ),
+                ),
+              ]),
+            ],
+          ),
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 30,
+        ),
+        child: SizedBox(
+          height: 80,
+          width: 80,
+          child: FloatingActionButton(
+              backgroundColor: const Color.fromARGB(190, 255, 255, 255),
+              onPressed: onCameraTap,
+              child: const SizedBox()),
+        ),
       ),
     );
   }
