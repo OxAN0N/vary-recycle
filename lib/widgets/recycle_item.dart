@@ -145,12 +145,11 @@ class _Recycle_itemState extends State<Recycle_item> {
               }
             },
             icon: Image.asset(
-              color: Colors.black,
-              "assets/${widget.name}.png",
+              "assets/HOME_page/${widget.name}.png",
             ),
           ),
           Text(
-            widget.name,
+            widget.name.toUpperCase(),
             style: GoogleFonts.varelaRound(
               fontSize: 20,
               fontWeight: FontWeight.w600,

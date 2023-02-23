@@ -201,6 +201,20 @@ class _RewardScreenState extends State<RewardScreen> {
                       fontWeight: FontWeight.w600,
                     ),
                   )
+                else if (snapshot
+                            .data!['result'] ==
+                        'Error occured in server' ||
+                    snapshot.data!['result'] ==
+                        'HTTP error occured in server' ||
+                    snapshot.data!['result'] == 'Server not connected')
+                  Text(
+                    snapshot.data!['result'],
+                    style: GoogleFonts.varelaRound(
+                      color: Colors.grey.shade600,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
                 else
                   Text(
                     'Make sure recycle properly.', // 예측은 했는데 전부 fail로 분류된 경우

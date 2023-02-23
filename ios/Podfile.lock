@@ -672,6 +672,8 @@ PODS:
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - Flutter (1.0.0)
+  - flutter_secure_storage (6.0.0):
+    - Flutter
   - google_sign_in_ios (0.0.1):
     - Flutter
     - GoogleSignIn (~> 6.2)
@@ -765,6 +767,11 @@ PODS:
     - Flutter
     - FlutterMacOS
   - PromisesObjC (2.2.0)
+  - rive_common (0.0.1):
+    - Flutter
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
@@ -773,8 +780,11 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - rive_common (from `.symlinks/plugins/rive_common/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
 
 SPEC REPOS:
   trunk:
@@ -814,10 +824,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   google_sign_in_ios:
     :path: ".symlinks/plugins/google_sign_in_ios/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
+  rive_common:
+    :path: ".symlinks/plugins/rive_common/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
 
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
@@ -838,6 +854,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 244f71ff14ef44f39e00b44d356eac708ce03103
   FirebaseStorage: 0efbff0ac978981866d89804191688ae50d64033
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   google_sign_in_ios: 4f85eb9f937450765c8573bb85fd8cd6a5af675c
   GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
@@ -850,6 +867,8 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
+  rive_common: e35144d3b86972f8760b6c9f8b120dfd5fadfa13
+  shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
 
 PODFILE CHECKSUM: 46f5a80664087a2fb889fd24c2bb3d698f787012
 

@@ -33,15 +33,15 @@ class _RecycleLifeState extends State<RecycleLife> {
             children: <Widget>[
               for (int i = 0; i < snapshot.data!; i++)
                 const Icon(
-                  Icons.favorite,
-                  color: Color.fromARGB(255, 107, 255, 112),
-                  size: 50,
+                  Icons.energy_savings_leaf,
+                  color: Color.fromARGB(255, 3, 206, 117),
+                  size: 35,
                 ),
               for (int i = snapshot.data!; i < 5; i++)
                 const Icon(
-                  Icons.favorite_outline,
+                  Icons.energy_savings_leaf_outlined,
                   color: Colors.grey,
-                  size: 50,
+                  size: 35,
                 )
             ],
           );

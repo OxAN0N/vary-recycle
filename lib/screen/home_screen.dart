@@ -2,15 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:rive/rive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vary_recycle/widgets/recycle_life.dart';
 import 'package:vary_recycle/widgets/recycle_item.dart';
 import 'package:vary_recycle/widgets/drawer.dart';
 
-final FirebaseAuth auth = FirebaseAuth.instance;
-final User? user = auth.currentUser;
-final myUid = user?.uid;
+FirebaseAuth auth = FirebaseAuth.instance;
+User? user = auth.currentUser;
+var myUid = user?.uid;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -44,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen>
       await FirebaseFirestore.instance.collection('user').doc('$myUid').set({
         'name': userName,
         'credit': credit,
+        'currentReq': DateTime.now().millisecond - 10000,
+        'countPerDay': 0
       });
     }
   }
@@ -78,9 +79,14 @@ class _HomeScreenState extends State<HomeScreen>
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          title: SizedBox(
+              height: kToolbarHeight, child: Image.asset('assets/logo.png')),
+          centerTitle: false,
+          // centerTitle: false,
+
           iconTheme: const IconThemeData(
             size: 30,
-            color: Color.fromARGB(255, 107, 255, 112),
+            color: Color.fromARGB(255, 3, 206, 117),
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -90,19 +96,17 @@ class _HomeScreenState extends State<HomeScreen>
           decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage(
-                  'assets/—Pngtree—green background material for garbage_1194152.jpg'),
+              image: AssetImage('assets/HOME_page/background.jpg'),
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.only(
+              top: 80,
+            ),
             child: Column(
               children: [
-                const Expanded(
-                  child: RecycleLife(),
-                ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: FutureBuilder(
                     future: ReturnValue('name'),
                     builder: (context, snapshot) {
@@ -111,13 +115,29 @@ class _HomeScreenState extends State<HomeScreen>
                       } else if (snapshot.hasError) {
                         return const Text("error");
                       } else {
-                        return Center(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            '${snapshot.data}',
-                            style: GoogleFonts.varelaRound(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600,
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 40, 0, 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${snapshot.data}',
+                                  style: GoogleFonts.varelaRound(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  "\"Reduce, Reuse, Recycle!\"",
+                                  style: GoogleFonts.varelaRound(
+                                    color: Colors.grey,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         );
@@ -126,53 +146,76 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 Expanded(
-                  flex: 1,
-                  child: FutureBuilder(
-                    future: ReturnValue('credit'),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData == false) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return const Text("error");
-                      } else {
-                        return Center(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            '+ ${snapshot.data}%',
-                            style: GoogleFonts.varelaRound(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: const Color.fromARGB(255, 107, 255, 112),
+                  flex: 2,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Expanded(
+                                child: RecycleLife(),
+                              ),
                             ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: FutureBuilder(
-                    future: ReturnValue('credit'),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData == false) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return const Text("error");
-                      } else {
-                        return Center(
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            '\$${snapshot.data}',
-                            style: GoogleFonts.varelaRound(
-                              fontSize: 40,
-                              fontWeight: FontWeight.w600,
+                            FutureBuilder(
+                              future: ReturnValue('credit'),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData == false) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return const Text("error");
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 50,
+                                    ),
+                                    child: Text(
+                                      textAlign: TextAlign.center,
+                                      '+ ${snapshot.data}%',
+                                      style: GoogleFonts.varelaRound(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color.fromARGB(
+                                            255, 3, 206, 117),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
                             ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                          ],
+                        ),
+                        FutureBuilder(
+                          future: ReturnValue('credit'),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData == false) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return const Text("error");
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 10,
+                                  right: 40,
+                                ),
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    '\$${snapshot.data}',
+                                    style: GoogleFonts.varelaRound(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ]),
                 ),
                 Expanded(
                   flex: 1,
@@ -180,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen>
                     child: Center(
                       child: Text(
                         textAlign: TextAlign.center,
-                        "your credit",
+                        "Click what you recylce",
                         style: GoogleFonts.varelaRound(
                           color: Colors.grey,
                           fontSize: 20,
@@ -191,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
                 Expanded(
-                  flex: 8,
+                  flex: 7,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -220,6 +263,10 @@ class _HomeScreenState extends State<HomeScreen>
                     ],
                   ),
                 ),
+                const Expanded(
+                  flex: 1,
+                  child: SizedBox(),
+                )
               ],
             ),
           ),
