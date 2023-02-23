@@ -55,6 +55,7 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   shared_preferences: ^2.0.17
   rive_splash_screen: ^0.1.1
+  flutter_native_image: ^0.0.6+1
   
 dev_dependencies:
   flutter_test:
@@ -86,6 +87,7 @@ flutter:
   assets:
     - assets/RiveAssets/
     - assets/logo.png
+    - assets/google.png
     - assets/RiveAssets/fristers_logo_animation.riv
     - assets/RiveAssets/vary_recycle_f.riv
     - assets/PET_guide/
@@ -93,6 +95,7 @@ flutter:
     - assets/PAPER_guide/
     - assets/GLASS_guide/
     - assets/HOME_page/
+    
   fonts:
     - family: Caveat
       fonts: 

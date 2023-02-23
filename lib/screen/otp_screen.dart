@@ -22,13 +22,13 @@ class OTPscreen extends StatelessWidget {
             ),
             Text(
               "Verification".toUpperCase(),
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(
               height: 40.0,
             ),
             const Text(
-              "Enter the verification code sent at support@varyrecycle.com",
+              "Enter the verification code.",
               textAlign: TextAlign.center,
             ),
             const SizedBox(

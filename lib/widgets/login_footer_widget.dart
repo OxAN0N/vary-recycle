@@ -14,11 +14,23 @@ class LoginFooterWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text("OR"),
         const SizedBox(
-          height: 10,
+          height: 15,
         ),
-        const GoogleLogin(),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () {
+              const GoogleLogin().signInWithGoogle(context);
+            },
+            label: const Text(
+              " Sign in with Google",
+              style: TextStyle(color: Colors.black),
+            ),
+            icon: const Image(
+                image: AssetImage('assets/google.png'), width: 20.0),
+          ),
+        ),
         const SizedBox(
           height: 10,
         ),
@@ -27,7 +39,7 @@ class LoginFooterWidget extends StatelessWidget {
           child: Text.rich(
             TextSpan(
               text: "Don't have an Account?",
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
               children: const [
                 TextSpan(
                   text: " Sign up",

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vary_recycle/screen/home_screen.dart';
 
 class RecycleLife extends StatefulWidget {
@@ -11,10 +12,11 @@ class RecycleLife extends StatefulWidget {
 
 class _RecycleLifeState extends State<RecycleLife> {
   Future<int> LifeCount() async {
+    String myUid = await ReturnId();
     final instance = FirebaseFirestore.instance;
-    final result = await instance.collection('user').doc('$myUid').get();
+    final result = await instance.collection('user').doc(myUid).get();
     var list = result.data();
-    var count = list?['countPerDay'];
+    var count = await list?['countPerDay'];
     return count;
   }
 

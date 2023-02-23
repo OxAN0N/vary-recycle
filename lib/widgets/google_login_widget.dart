@@ -1,28 +1,43 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../screen/phone_number_input_page.dart';
 
 class GoogleLogin extends StatelessWidget {
   const GoogleLogin({Key? key}) : super(key: key);
 
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  Future<UserCredential?> signInWithGoogle(BuildContext context) async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PhoneNumberInputScreen(
+              credential: credential,
+            ),
+          ),
+        );
+      }
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print(e);
+    }
+    return null;
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   @override
@@ -30,13 +45,16 @@ class GoogleLogin extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SignInButton(
-          Buttons.Google,
-          onPressed: () {
-            signInWithGoogle();
-          },
-          text: "Sign up with Google",
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () {
+              signInWithGoogle(context);
+            },
+            label: const Text(" Sign in with Google"),
+            icon: const Image(
+                image: AssetImage('assets/google.png'), width: 20.0),
+          ),
         ),
       ],
     );

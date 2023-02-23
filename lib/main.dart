@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rive_splash_screen/rive_splash_screen.dart';
 import 'package:vary_recycle/screen/home_screen.dart';
 
@@ -39,11 +40,13 @@ class MyApp extends StatelessWidget {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext _, AsyncSnapshot<User?> user) {
-          if (user.hasData) {
-            return const HomeScreen();
-          } else {
-            return const LoginScreen();
-          }
+          return const LoginScreen();
+
+          // if (user.hasData) {
+          //   return const HomeScreen();
+          // } else {
+          //   return const LoginScreen();
+          // }
         });
   }
 

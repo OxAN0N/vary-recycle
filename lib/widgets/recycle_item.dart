@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vary_recycle/screen/home_screen.dart';
 import 'package:vary_recycle/screen/take_picture_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Recycle_item extends StatefulWidget {
   const Recycle_item({
@@ -41,6 +42,7 @@ class _Recycle_itemState extends State<Recycle_item> {
   }
 
   Future<Duration> TimeCheck() async {
+    String myUid = await ReturnId();
     final instance = FirebaseFirestore.instance;
     final time = await instance.collection('user').doc('$myUid').get();
     var list = time.data();
@@ -52,8 +54,9 @@ class _Recycle_itemState extends State<Recycle_item> {
   }
 
   Future<int> lifeCheck() async {
+    String myUid = await ReturnId();
     final instance = FirebaseFirestore.instance;
-    final life = await instance.collection('user').doc('$myUid').get();
+    final life = await instance.collection('user').doc(myUid).get();
     var list = life.data();
     int restLife = list?['countPerDay'];
     return restLife;
