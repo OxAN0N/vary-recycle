@@ -52,6 +52,8 @@ dependencies:
   rive: ^0.10.1
   flutter_otp_text_field: ^1.1.1
   carousel_slider: ^4.2.1
+  image: ^4.0.15
+  flutter_native_image: ^0.0.6+1
   
 dev_dependencies:
   flutter_test:
@@ -96,6 +98,8 @@ flutter:
     - assets/CAN_guide/
     - assets/PAPER_guide/
     - assets/GLASS_guide/
+    - assets/RiveAssets/success_check2.riv
+    - assets/RiveAssets/error.riv
     
   fonts:
     - family: Caveat

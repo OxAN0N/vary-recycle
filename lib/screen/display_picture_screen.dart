@@ -18,7 +18,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   onConfirmTap() async {
     final storageRef = FirebaseStorage.instance.ref();
     final imageRef = storageRef.child(widget.imagePath
-        .substring(60, 69)); // Storage에 저장될 때 파일 이름, 어떻게 설정해야할까..?
+        .substring(60, 64)); // Storage에 저장될 때 파일 이름, 어떻게 설정해야할까..?
     File file = File(widget.imagePath);
 
     Navigator.of(context).push(
