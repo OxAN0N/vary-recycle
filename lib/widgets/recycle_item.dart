@@ -78,7 +78,7 @@ class _Recycle_itemState extends State<Recycle_item> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       content: const Text(
-                        "Your remain chance is over today!",
+                        "Enough Credit Today!",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -117,7 +117,7 @@ class _Recycle_itemState extends State<Recycle_item> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       content: Text(
-                        "You can try it after $hour hours $minute mintues!",
+                        "Try $hour hours $minute minutes later!",
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,

@@ -43,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen>
       await FirebaseFirestore.instance.collection('user').doc('$myUid').set({
         'name': userName,
         'credit': credit,
-        'currentReq': DateTime.now().millisecond - 10000,
+        'currentReq': Timestamp.fromMillisecondsSinceEpoch(
+            DateTime.now().millisecond - 10000),
         'countPerDay': 0
       });
     }
@@ -145,77 +146,77 @@ class _HomeScreenState extends State<HomeScreen>
                     },
                   ),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Expanded(
-                                child: RecycleLife(),
-                              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Expanded(
+                    flex: 2,
+                    child: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Align(
+                            child: Expanded(
+                              child: RecycleLife(),
                             ),
-                            FutureBuilder(
-                              future: ReturnValue('credit'),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData == false) {
-                                  return const CircularProgressIndicator();
-                                } else if (snapshot.hasError) {
-                                  return const Text("error");
-                                } else {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 50,
-                                    ),
-                                    child: Text(
-                                      textAlign: TextAlign.center,
-                                      '+ ${snapshot.data}%',
-                                      style: GoogleFonts.varelaRound(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: const Color.fromARGB(
-                                            255, 3, 206, 117),
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                        FutureBuilder(
-                          future: ReturnValue('credit'),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData == false) {
-                              return const CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return const Text("error");
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                  right: 40,
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
+                          ),
+                          FutureBuilder(
+                            future: ReturnValue('credit'),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData == false) {
+                                return const CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return const Text("error");
+                              } else {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 50,
+                                  ),
                                   child: Text(
                                     textAlign: TextAlign.center,
-                                    '\$${snapshot.data}',
+                                    '+ ${snapshot.data}%',
                                     style: GoogleFonts.varelaRound(
-                                      fontSize: 40,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600,
+                                      color: const Color.fromARGB(
+                                          255, 3, 206, 117),
                                     ),
                                   ),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      FutureBuilder(
+                        future: ReturnValue('credit'),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData == false) {
+                            return const CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return const Text("error");
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                top: 10,
+                                right: 40,
+                              ),
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text(
+                                  textAlign: TextAlign.center,
+                                  '\$${snapshot.data}',
+                                  style: GoogleFonts.varelaRound(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              );
-                            }
-                          },
-                        ),
-                      ]),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ]),
+                  ),
                 ),
                 Expanded(
                   flex: 1,

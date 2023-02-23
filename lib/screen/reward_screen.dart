@@ -103,7 +103,8 @@ class _RewardScreenState extends State<RewardScreen> {
                   height: 10,
                 ),
                 Text(
-                  'You got ${snapshot.data!['success'] * 30} credits',
+                  // 'You got ${snapshot.data!['success'] * 30} credits',
+                  'You got 30 credits',
                   style: GoogleFonts.varelaRound(
                     color: Colors.grey.shade600,
                     fontSize: 20,
@@ -117,30 +118,93 @@ class _RewardScreenState extends State<RewardScreen> {
                       "assets/RiveAssets/success_check2.riv"),
                 ),
                 Center(
-                  child: Column(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Detected Object : ${snapshot.data!['success']}',
-                        style: GoogleFonts.varelaRound(
-                          color: Colors.grey.shade600,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Detected Object',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'Success',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text('Fail',
+                              style: GoogleFonts.varelaRound(
+                                color: Colors.grey.shade600,
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ))
+                        ],
                       ),
-                      Text(
-                        'Success                : ${snapshot.data!['success']}',
-                        style: GoogleFonts.varelaRound(
-                          color: Colors.grey.shade600,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Column(
+                        children: [
+                          Text(
+                            ' : ',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            ' : ',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            ' : ',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
                       ),
-                      Text('Fail                         : 0',
-                          style: GoogleFonts.varelaRound(
-                            color: Colors.grey.shade600,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ))
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${snapshot.data!['detected_object']}',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            '${snapshot.data!['success']}',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            '${snapshot.data!['fail']}',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -224,37 +288,102 @@ class _RewardScreenState extends State<RewardScreen> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                const SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: RiveAnimation.asset("assets/RiveAssets/error.riv"),
+                const Padding(
+                  padding: EdgeInsets.all(50),
+                  child: SizedBox(
+                    width: 180,
+                    height: 180,
+                    child: RiveAnimation.asset("assets/RiveAssets/error.riv"),
+                  ),
                 ),
                 Center(
-                  child: Column(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Detected Object : ${snapshot.data!['detected object']}',
-                        style: GoogleFonts.varelaRound(
-                          color: Colors.grey.shade600,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Detected Object',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'Success',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text('Fail',
+                              style: GoogleFonts.varelaRound(
+                                color: Colors.grey.shade600,
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                              ))
+                        ],
                       ),
-                      Text(
-                        'Success                : ${snapshot.data!['success']}',
-                        style: GoogleFonts.varelaRound(
-                          color: Colors.grey.shade600,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Column(
+                        children: [
+                          Text(
+                            ' : ',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            ' : ',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            ' : ',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
                       ),
-                      Text(
-                          'Fail                         : ${snapshot.data!['fail']}',
-                          style: GoogleFonts.varelaRound(
-                            color: Colors.grey.shade600,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ))
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '${snapshot.data!['detected_object']}',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            '${snapshot.data!['success']}',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            '${snapshot.data!['fail']}',
+                            style: GoogleFonts.varelaRound(
+                              color: Colors.grey.shade600,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
